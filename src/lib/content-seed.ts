@@ -10,7 +10,7 @@ export const defaultContent: SiteContent = {
       "We connect you with skilled and reliable labour for all kinds of work at your convenience.",
     ctaPrimary: "Request Labour Now",
     ctaSecondary: "How It Works",
-    howItWorksVideoUrl: "",
+    howItWorksVideoUrl: "https://youtu.be/LzxAetI7Mx4",
     ratingValue: "4.8/5",
     ratingLabel: "Trusted by 10,000+ Users",
     searchHeading: "Find Labour Near You",

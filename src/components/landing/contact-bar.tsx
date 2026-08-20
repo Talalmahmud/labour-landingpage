@@ -11,7 +11,7 @@ interface ContactBarProps {
 export function ContactBar({ content }: ContactBarProps) {
   return (
     <section className="bg-blue-950 text-white">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-8 sm:flex-row">
+      <div className="mx-auto flex flex-col items-center justify-between gap-6 px-6 py-8 sm:flex-row">
         <div className="flex items-center gap-3">
           <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-white/10">
             <Headset className="size-5" />
@@ -35,7 +35,13 @@ export function ContactBar({ content }: ContactBarProps) {
 
         <Button
           className="h-11 gap-2 bg-emerald-500 px-6 text-white hover:bg-emerald-600"
-          render={<a href={toWhatsAppHref(content.phone)} target="_blank" rel="noopener noreferrer" />}
+          render={
+            <a
+              href={toWhatsAppHref(content.phone)}
+              target="_blank"
+              rel="noopener noreferrer"
+            />
+          }
           nativeButton={false}
         >
           <MessageCircle className="size-4 fill-current" />

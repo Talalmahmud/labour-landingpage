@@ -26,26 +26,38 @@ export function Hero({ content, workerNames }: HeroProps) {
   const router = useRouter();
   const [location, setLocation] = useState("");
   const [videoOpen, setVideoOpen] = useState(false);
-  const badgeInitials = workerNames.length > 0 ? workerNames.map(getInitials) : ["SH"];
+  const badgeInitials =
+    workerNames.length > 0 ? workerNames.map(getInitials) : ["SH"];
   const hasVideo = getYouTubeEmbedUrl(content.howItWorksVideoUrl) !== null;
-
+  console.log(hasVideo);
   function handleFindLabour() {
     const query = location.trim();
-    router.push(query ? `/find-labour?location=${encodeURIComponent(query)}` : "/find-labour");
+    router.push(
+      query
+        ? `/find-labour?location=${encodeURIComponent(query)}`
+        : "/find-labour",
+    );
   }
 
   return (
-    <section className="overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-background dark:to-background">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 py-16 lg:grid-cols-2 lg:py-20">
-        <div className="flex flex-col gap-6">
-          <h1 className="font-heading text-4xl leading-tight font-extrabold tracking-tight text-blue-950 sm:text-5xl dark:text-white">
+    <section className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-background dark:to-background">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-40 right-0 size-144 rounded-full bg-blue-100/60 blur-3xl dark:bg-blue-900/10"
+      />
+
+      <div className="relative mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-12 px-6 py-16 lg:grid-cols-[1fr_1.05fr] lg:gap-16 lg:py-24">
+        <div className="flex max-w-xl flex-col gap-6">
+          <h1 className="font-heading text-5xl leading-[1.05] font-extrabold tracking-tight text-blue-950 sm:text-6xl dark:text-white">
             {content.titleLine1}
             <br />
             {content.titleLine2}
             <br />
             <span className="text-blue-600">{content.titleHighlight}</span>
           </h1>
-          <p className="max-w-md text-base text-muted-foreground">{content.subtitle}</p>
+          <p className="max-w-md text-base text-muted-foreground">
+            {content.subtitle}
+          </p>
 
           <div className="flex flex-wrap items-center gap-4">
             <Button
@@ -87,13 +99,18 @@ export function Hero({ content, workerNames }: HeroProps) {
 
           <div className="mt-4 flex flex-wrap items-center gap-8">
             {content.stats.map((stat) => (
-              <Stat key={stat.label} icon={stat.icon} value={stat.value} label={stat.label} />
+              <Stat
+                key={stat.label}
+                icon={stat.icon}
+                value={stat.value}
+                label={stat.label}
+              />
             ))}
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-md lg:mx-0 lg:ml-auto">
-          <div className="absolute -top-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3 rounded-2xl bg-background px-4 py-3 shadow-lg ring-1 ring-foreground/10 sm:left-auto sm:right-6 sm:translate-x-0">
+        <div className="relative mx-auto w-full">
+          <div className="absolute -top-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3 rounded-2xl bg-background px-4 py-3 shadow-lg ring-1 ring-foreground/10 sm:left-auto sm:right-8 sm:translate-x-0">
             <div className="flex -space-x-2">
               {badgeInitials.slice(0, 4).map((initials, i) => (
                 <span
@@ -106,19 +123,25 @@ export function Hero({ content, workerNames }: HeroProps) {
             </div>
             <div className="leading-tight">
               <p className="flex items-center gap-1 text-sm font-semibold">
-                {content.ratingValue} <Star className="size-3.5 fill-amber-400 text-amber-400" />
+                {content.ratingValue}{" "}
+                <Star className="size-3.5 fill-amber-400 text-amber-400" />
               </p>
-              <p className="text-xs text-muted-foreground">{content.ratingLabel}</p>
+              <p className="text-xs text-muted-foreground">
+                {content.ratingLabel}
+              </p>
             </div>
           </div>
 
-          <div className="relative aspect-360/460 overflow-hidden rounded-3xl bg-blue-950">
+          <div className="relative aspect-4/5 w-full overflow-hidden rounded-3xl bg-blue-950 shadow-2xl">
             {content.imagePublicId ? (
               <Image
-                src={cloudinaryUrl(content.imagePublicId, "f_auto,q_auto,w_720,h_920,c_fill,g_auto")}
+                src={cloudinaryUrl(
+                  content.imagePublicId,
+                  "f_auto,q_auto,w_960,h_1200,c_fill,g_auto",
+                )}
                 alt="Skilled labour ready for work"
                 fill
-                sizes="(min-width: 1024px) 28rem, 90vw"
+                sizes="(min-width: 1024px) 45vw, 100vw"
                 className="object-cover"
                 priority
               />
@@ -127,7 +150,7 @@ export function Hero({ content, workerNames }: HeroProps) {
             )}
           </div>
 
-          <div className="relative -mt-16 rounded-2xl bg-background p-5 shadow-xl ring-1 ring-foreground/10 sm:mx-6">
+          <div className="relative -mt-16 rounded-2xl bg-background p-5 shadow-xl ring-1 ring-foreground/10 sm:mx-8">
             <p className="flex items-center gap-1.5 text-sm font-semibold text-blue-950 dark:text-white">
               <MapPin className="size-4 text-blue-600" />
               {content.searchHeading}
@@ -145,7 +168,10 @@ export function Hero({ content, workerNames }: HeroProps) {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
-              <Button type="submit" className="h-10 gap-2 bg-blue-950 text-white hover:bg-blue-900">
+              <Button
+                type="submit"
+                className="h-10 gap-2 bg-blue-950 text-white hover:bg-blue-900"
+              >
                 <Search className="size-4" />
                 {content.searchButton}
               </Button>
@@ -154,7 +180,10 @@ export function Hero({ content, workerNames }: HeroProps) {
               <p className="text-xs text-muted-foreground">Popular Searches:</p>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {content.popularSearches.map((city) => (
-                  <Link key={city} href={`/find-labour?location=${encodeURIComponent(city)}`}>
+                  <Link
+                    key={city}
+                    href={`/find-labour?location=${encodeURIComponent(city)}`}
+                  >
                     <Badge
                       variant="outline"
                       className="cursor-pointer rounded-md px-2.5 py-1 text-xs transition-colors hover:bg-muted"
@@ -193,7 +222,9 @@ function Stat({
     <div className="flex items-center gap-2">
       <DynamicIcon name={icon} className="size-5 text-blue-600" />
       <div className="leading-tight">
-        <p className="text-sm font-semibold text-blue-950 dark:text-white">{value}</p>
+        <p className="text-sm font-semibold text-blue-950 dark:text-white">
+          {value}
+        </p>
         <p className="text-xs text-muted-foreground">{label}</p>
       </div>
     </div>

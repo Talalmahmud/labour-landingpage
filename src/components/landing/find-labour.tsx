@@ -23,12 +23,13 @@ interface FindLabourProps {
 }
 
 export function FindLabour({ content }: FindLabourProps) {
-  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]["key"]>("workers");
+  const [activeTab, setActiveTab] =
+    useState<(typeof tabs)[number]["key"]>("workers");
   const [selectedWorker, setSelectedWorker] = useState<Worker | null>(null);
   const { heading, subheading, workers, mapPins } = content;
 
   return (
-    <section id="find-labour" className="mx-auto max-w-7xl px-6 py-16">
+    <section id="find-labour" className="mx-auto  px-6 py-16">
       <div className="rounded-2xl border border-border bg-background p-6 shadow-xs sm:p-8">
         <h2 className="font-heading text-xl font-bold text-blue-950 sm:text-2xl dark:text-white">
           {heading}
@@ -46,7 +47,7 @@ export function FindLabour({ content }: FindLabourProps) {
                     "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                     activeTab === tab.key
                       ? "bg-background text-blue-950 shadow-xs dark:text-white"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   <tab.icon className="size-4" />
@@ -70,7 +71,12 @@ export function FindLabour({ content }: FindLabourProps) {
                         <p className="text-sm font-semibold text-blue-950 dark:text-white">
                           {worker.name}
                         </p>
-                        <Badge className={cn("rounded-full", roleToneClasses[worker.roleTone])}>
+                        <Badge
+                          className={cn(
+                            "rounded-full",
+                            roleToneClasses[worker.roleTone],
+                          )}
+                        >
                           {worker.role}
                         </Badge>
                         <span className="flex items-center gap-0.5 text-xs font-medium text-amber-500">
@@ -78,7 +84,9 @@ export function FindLabour({ content }: FindLabourProps) {
                           <Star className="size-3 fill-amber-400 text-amber-400" />
                         </span>
                       </div>
-                      <p className="text-xs text-muted-foreground">{worker.experience}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {worker.experience}
+                      </p>
                       <p className="flex items-center gap-1 text-xs text-muted-foreground">
                         <MapPin className="size-3" />
                         {worker.location}
@@ -118,7 +126,9 @@ export function FindLabour({ content }: FindLabourProps) {
                       <p className="text-sm font-semibold text-blue-950 dark:text-white">
                         {pin.label}
                       </p>
-                      <p className="text-xs text-muted-foreground">Dhaka, Bangladesh</p>
+                      <p className="text-xs text-muted-foreground">
+                        Dhaka, Bangladesh
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -130,7 +140,10 @@ export function FindLabour({ content }: FindLabourProps) {
         </div>
       </div>
 
-      <WorkerProfileDialog worker={selectedWorker} onOpenChange={(open) => !open && setSelectedWorker(null)} />
+      <WorkerProfileDialog
+        worker={selectedWorker}
+        onOpenChange={(open) => !open && setSelectedWorker(null)}
+      />
     </section>
   );
 }

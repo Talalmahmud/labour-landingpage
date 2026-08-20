@@ -21,7 +21,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-20  items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2.5">
           <div className="flex size-9 items-center justify-center rounded-lg bg-blue-950 text-white">
             <HardHat className="size-5" />
@@ -30,13 +30,18 @@ export function Navbar() {
             <p className="font-heading text-lg font-bold text-blue-950 dark:text-white">
               Shromik
             </p>
-            <p className="text-[11px] text-muted-foreground">Service for People</p>
+            <p className="text-[11px] text-muted-foreground">
+              Service for People
+            </p>
           </div>
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">
           {links.map((link) => {
-            const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+            const isActive =
+              link.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(link.href);
             return (
               <Link
                 key={link.label}
@@ -45,7 +50,7 @@ export function Navbar() {
                   "relative text-sm font-medium transition-colors",
                   isActive
                     ? "text-blue-950 after:absolute after:-bottom-6.5 after:left-0 after:h-0.5 after:w-full after:bg-blue-950 dark:text-white dark:after:bg-white"
-                    : "text-muted-foreground hover:text-blue-950 dark:hover:text-white"
+                    : "text-muted-foreground hover:text-blue-950 dark:hover:text-white",
                 )}
               >
                 {link.label}

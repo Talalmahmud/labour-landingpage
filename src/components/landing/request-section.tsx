@@ -25,13 +25,14 @@ type SubmitState = "idle" | "submitting" | "success" | "error";
 
 export function RequestSection({ content, services }: RequestSectionProps) {
   return (
-    <section id="how-it-works" className="mx-auto max-w-7xl px-6 py-8">
+    <section id="how-it-works" className="mx-auto px-6 py-8">
       <div className="grid grid-cols-1 overflow-hidden rounded-2xl shadow-sm ring-1 ring-foreground/10 lg:grid-cols-5">
         <div className="flex flex-col gap-8 bg-blue-950 p-8 text-white lg:col-span-2 lg:p-10">
           <h2 className="font-heading text-2xl font-bold leading-snug">
             {content.headingLine1}
             <br />
-            in <span className="text-amber-400">{content.headingHighlight}</span>
+            in{" "}
+            <span className="text-amber-400">{content.headingHighlight}</span>
           </h2>
 
           <ol className="relative flex flex-col gap-8">
@@ -43,7 +44,9 @@ export function RequestSection({ content, services }: RequestSectionProps) {
                 </span>
                 <div>
                   <p className="font-medium">{step.title}</p>
-                  <p className="mt-0.5 text-sm text-white/70">{step.description}</p>
+                  <p className="mt-0.5 text-sm text-white/70">
+                    {step.description}
+                  </p>
                 </div>
               </li>
             ))}
@@ -108,7 +111,12 @@ function RequestForm({ content, services }: RequestSectionProps) {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Your Name">
-          <Input placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} required />
+          <Input
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
         </Field>
         <Field label="Phone Number">
           <Input
