@@ -26,10 +26,10 @@ export function MissionVisionContent({ content }: MissionVisionContentProps) {
           <span className="flex size-11 items-center justify-center rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
             <Target className="size-5" />
           </span>
-          <h2 className="font-heading text-xl font-bold">
+       <h2 className="font-heading text-xl font-bold text-blue-950 dark:text-white">
             {content.missionTitle}
           </h2>
-          <p className="text-sm leading-relaxed text-white/75">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {content.missionText}
           </p>
         </div>
