@@ -1,6 +1,11 @@
 import type { SiteContent } from "@/lib/content-types";
 
 export const defaultContent: SiteContent = {
+  siteSettings: {
+    logoPublicId: null,
+    siteName: "Shromik",
+    tagline: "Service for People",
+  },
   hero: {
     imagePublicId: null,
     titleLine1: "Find Trusted",
@@ -17,10 +22,37 @@ export const defaultContent: SiteContent = {
     searchPlaceholder: "Enter your location",
     searchButton: "Find Labour",
     stats: [
-      { icon: "shield-check", value: "10,000+", label: "Verified Workers" },
-      { icon: "users", value: "50,000+", label: "Jobs Completed" },
-      { icon: "tag", value: "4.8/5", label: "Customer Rating" },
+      {
+        icon: "shield-check",
+        value: "10,000+",
+        label: "Verified Workers",
+        sublabel: "Skilled & background verified",
+      },
+      {
+        icon: "users",
+        value: "50,000+",
+        label: "Jobs Completed",
+        sublabel: "Successfully delivered",
+      },
+      {
+        icon: "tag",
+        value: "4.8/5",
+        label: "Customer Rating",
+        sublabel: "Based on real reviews",
+      },
+      {
+        icon: "headphones",
+        value: "24/7",
+        label: "Support Available",
+        sublabel: "We're here to help",
+      },
     ],
+    badges: [
+      { icon: "shield-check", label: "Verified Workers" },
+      { icon: "zap", label: "Instant Matching" },
+      { icon: "lock", label: "Secure & Reliable" },
+    ],
+    galleryImagePublicIds: [null, null, null, null, null],
     popularSearches: ["Dhaka", "Chattogram", "Sylhet", "Khulna", "Rajshahi"],
   },
   services: {
@@ -113,6 +145,33 @@ export const defaultContent: SiteContent = {
       description: "We ensure your complete satisfaction",
     },
   ],
+  missionVision: {
+    heading: "Our Mission & Vision",
+    subheading: "What drives us and where we're headed.",
+    missionTitle: "Our Mission",
+    missionText:
+      "To make skilled labour accessible, trustworthy, and fairly paid — for both the people who hire and the people who do the work.",
+    visionTitle: "Our Vision",
+    visionText:
+      "A world where finding reliable, verified labour is as easy as a few taps, and every skilled worker has a fair path to steady, well-paid work.",
+    values: [
+      {
+        icon: "shield-check",
+        title: "Trust First",
+        description: "Every worker is verified and background-checked before they join.",
+      },
+      {
+        icon: "handshake",
+        title: "Fairness",
+        description: "Transparent pricing and fair pay, for customers and workers alike.",
+      },
+      {
+        icon: "zap",
+        title: "Reliability",
+        description: "Fast matching and dependable service you can count on, every time.",
+      },
+    ],
+  },
   contact: {
     helpTitle: "Need Help?",
     helpText: "We are here to help you 24/7",
@@ -133,10 +192,30 @@ export const defaultContent: SiteContent = {
     missionText:
       "To make skilled labour accessible, trustworthy, and fairly paid — for both the people who hire and the people who do the work.",
     stats: [
-      { icon: "shield-check", value: "10,000+", label: "Verified Workers" },
-      { icon: "briefcase", value: "50,000+", label: "Jobs Completed" },
-      { icon: "map-pin", value: "12+", label: "Cities Covered" },
-      { icon: "thumbs-up", value: "4.8/5", label: "Average Rating" },
+      {
+        icon: "shield-check",
+        value: "10,000+",
+        label: "Verified Workers",
+        sublabel: "Skilled & background verified",
+      },
+      {
+        icon: "briefcase",
+        value: "50,000+",
+        label: "Jobs Completed",
+        sublabel: "Successfully delivered",
+      },
+      {
+        icon: "map-pin",
+        value: "12+",
+        label: "Cities Covered",
+        sublabel: "Across the country",
+      },
+      {
+        icon: "thumbs-up",
+        value: "4.8/5",
+        label: "Average Rating",
+        sublabel: "Based on real reviews",
+      },
     ],
     team: [
       { name: "Imran Hossain", role: "Founder & CEO", bio: "Building trusted labour marketplaces for 8 years.", imagePublicId: null },
@@ -162,5 +241,9 @@ export const defaultContent: SiteContent = {
   findLabourPage: {
     heading: "Browse All Workers",
     subheading: "Search and filter verified workers by service and location.",
+  },
+  blogPage: {
+    heading: "The Shromik Blog",
+    subheading: "Tips, stories, and updates from the world of skilled labour.",
   },
 };

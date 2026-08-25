@@ -10,7 +10,7 @@ export default async function ServicesPage() {
 
   return (
     <div className="flex flex-1 flex-col bg-background">
-      <Navbar />
+      <Navbar content={content.siteSettings} />
       <main className="flex-1">
         <ServicesContent page={content.servicesPage} services={content.services.items} />
       </main>

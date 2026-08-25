@@ -2,6 +2,12 @@ export interface HeroStat {
   icon: string;
   value: string;
   label: string;
+  sublabel: string;
+}
+
+export interface HeroBadge {
+  icon: string;
+  label: string;
 }
 
 export interface ServiceItem {
@@ -46,6 +52,11 @@ export interface TeamMember {
 }
 
 export interface SiteContent {
+  siteSettings: {
+    logoPublicId: string | null;
+    siteName: string;
+    tagline: string;
+  };
   hero: {
     imagePublicId: string | null;
     titleLine1: string;
@@ -61,6 +72,8 @@ export interface SiteContent {
     searchPlaceholder: string;
     searchButton: string;
     stats: HeroStat[];
+    badges: HeroBadge[];
+    galleryImagePublicIds: (string | null)[];
     popularSearches: string[];
   };
   services: {
@@ -82,6 +95,15 @@ export interface SiteContent {
     mapPins: MapPin[];
   };
   trustPoints: TrustPoint[];
+  missionVision: {
+    heading: string;
+    subheading: string;
+    missionTitle: string;
+    missionText: string;
+    visionTitle: string;
+    visionText: string;
+    values: TrustPoint[];
+  };
   contact: {
     helpTitle: string;
     helpText: string;
@@ -115,6 +137,10 @@ export interface SiteContent {
     intro: string;
   };
   findLabourPage: {
+    heading: string;
+    subheading: string;
+  };
+  blogPage: {
     heading: string;
     subheading: string;
   };

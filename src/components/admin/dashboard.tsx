@@ -16,6 +16,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrayEditor } from "@/components/admin/array-editor";
+import { BlogPanel } from "@/components/admin/blog-panel";
 import { Field } from "@/components/admin/field";
 import { IconPicker } from "@/components/admin/icon-picker";
 import { ImageUploadField } from "@/components/admin/image-upload-field";
@@ -41,6 +42,8 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
   const trackUploading = (uploading: boolean) =>
     setUploadingCount((c) => Math.max(0, c + (uploading ? 1 : -1)));
 
+  const updateSiteSettings = (patch: Partial<SiteContent["siteSettings"]>) =>
+    setContent((c) => ({ ...c, siteSettings: { ...c.siteSettings, ...patch } }));
   const updateHero = (patch: Partial<SiteContent["hero"]>) =>
     setContent((c) => ({ ...c, hero: { ...c.hero, ...patch } }));
   const updateServicesMeta = (patch: Partial<Omit<SiteContent["services"], "items">>) =>
@@ -50,6 +53,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
   const updateFindLabourMeta = (
     patch: Partial<Omit<SiteContent["findLabour"], "workers" | "mapPins">>
   ) => setContent((c) => ({ ...c, findLabour: { ...c.findLabour, ...patch } }));
+  const updateMissionVisionMeta = (
+    patch: Partial<Omit<SiteContent["missionVision"], "values">>
+  ) => setContent((c) => ({ ...c, missionVision: { ...c.missionVision, ...patch } }));
   const updateContact = (patch: Partial<SiteContent["contact"]>) =>
     setContent((c) => ({ ...c, contact: { ...c.contact, ...patch } }));
   const updateAboutPage = (patch: Partial<Omit<SiteContent["aboutPage"], "stats" | "team">>) =>
@@ -60,6 +66,8 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
     setContent((c) => ({ ...c, servicesPage: { ...c.servicesPage, ...patch } }));
   const updateFindLabourPage = (patch: Partial<SiteContent["findLabourPage"]>) =>
     setContent((c) => ({ ...c, findLabourPage: { ...c.findLabourPage, ...patch } }));
+  const updateBlogPage = (patch: Partial<SiteContent["blogPage"]>) =>
+    setContent((c) => ({ ...c, blogPage: { ...c.blogPage, ...patch } }));
 
   async function handleSave() {
     setSaveState("saving");
@@ -143,19 +151,53 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
       <div className="mx-auto max-w-5xl px-6 py-8">
         <Tabs defaultValue="hero">
           <TabsList className="flex-wrap">
+            <TabsTrigger value="site-settings">Site Settings</TabsTrigger>
             <TabsTrigger value="hero">Hero</TabsTrigger>
             <TabsTrigger value="services">Services</TabsTrigger>
             <TabsTrigger value="steps">Steps</TabsTrigger>
             <TabsTrigger value="workers">Workers</TabsTrigger>
             <TabsTrigger value="trust">Trust Points</TabsTrigger>
+            <TabsTrigger value="mission-vision">Mission & Vision</TabsTrigger>
             <TabsTrigger value="contact-bar">Contact Bar</TabsTrigger>
             <TabsTrigger value="about-page">About Page</TabsTrigger>
             <TabsTrigger value="contact-page">Contact Page</TabsTrigger>
             <TabsTrigger value="services-page">Services Page</TabsTrigger>
             <TabsTrigger value="find-labour-page">Find Labour Page</TabsTrigger>
+            <TabsTrigger value="blog">Blog</TabsTrigger>
             <TabsTrigger value="requests">Requests</TabsTrigger>
             <TabsTrigger value="messages">Messages</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="site-settings" className="mt-6">
+            <Card>
+              <p className="text-xs text-muted-foreground">
+                The logo and site name shown in the navbar across every page.
+              </p>
+              <Field label="Logo">
+                <ImageUploadField
+                  value={content.siteSettings.logoPublicId}
+                  onChange={(logoPublicId) => updateSiteSettings({ logoPublicId })}
+                  onUploadingChange={trackUploading}
+                  hint="Falls back to the default icon when no logo is set."
+                  previewTransform="f_auto,q_auto,w_160,h_160,c_fit"
+                />
+              </Field>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Site Name">
+                  <Input
+                    value={content.siteSettings.siteName}
+                    onChange={(e) => updateSiteSettings({ siteName: e.target.value })}
+                  />
+                </Field>
+                <Field label="Tagline">
+                  <Input
+                    value={content.siteSettings.tagline}
+                    onChange={(e) => updateSiteSettings({ tagline: e.target.value })}
+                  />
+                </Field>
+              </div>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="hero" className="mt-6">
             <Card>
@@ -225,11 +267,11 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <ArrayEditor
                 items={content.hero.stats}
                 onChange={(stats) => updateHero({ stats })}
-                newItem={() => ({ icon: "zap", value: "0", label: "New stat" })}
+                newItem={() => ({ icon: "zap", value: "0", label: "New stat", sublabel: "" })}
                 addLabel="Add stat"
                 minItems={1}
                 renderItem={(stat, update) => (
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
                     <Field label="Icon">
                       <IconPicker value={stat.icon} onChange={(icon) => update({ icon })} />
                     </Field>
@@ -239,9 +281,87 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                     <Field label="Label">
                       <Input value={stat.label} onChange={(e) => update({ label: e.target.value })} />
                     </Field>
+                    <Field label="Sublabel">
+                      <Input value={stat.sublabel} onChange={(e) => update({ sublabel: e.target.value })} />
+                    </Field>
                   </div>
                 )}
               />
+
+              <SectionTitle>Feature Badges</SectionTitle>
+              <p className="-mt-3 text-xs text-muted-foreground">
+                The small pills shown under the hero buttons (e.g. &quot;Verified Workers&quot;).
+              </p>
+              <ArrayEditor
+                items={content.hero.badges}
+                onChange={(badges) => updateHero({ badges })}
+                newItem={() => ({ icon: "shield-check", label: "New Badge" })}
+                addLabel="Add badge"
+                minItems={0}
+                renderItem={(badge, update) => (
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <Field label="Icon">
+                      <IconPicker value={badge.icon} onChange={(icon) => update({ icon })} />
+                    </Field>
+                    <Field label="Label">
+                      <Input value={badge.label} onChange={(e) => update({ label: e.target.value })} />
+                    </Field>
+                  </div>
+                )}
+              />
+
+              <SectionTitle>Gallery Photos</SectionTitle>
+              <p className="-mt-3 text-xs text-muted-foreground">
+                The small worker photos shown under the hero image.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {content.hero.galleryImagePublicIds.map((publicId, index) => (
+                  <ImageUploadField
+                    key={index}
+                    value={publicId}
+                    onChange={(next) =>
+                      updateHero({
+                        galleryImagePublicIds: content.hero.galleryImagePublicIds.map((p, i) =>
+                          i === index ? next : p,
+                        ),
+                      })
+                    }
+                    onUploadingChange={trackUploading}
+                    hint=""
+                    previewTransform="f_auto,q_auto,w_160,h_160,c_fill,g_auto"
+                  />
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="w-fit gap-1.5"
+                  onClick={() =>
+                    updateHero({
+                      galleryImagePublicIds: [...content.hero.galleryImagePublicIds, null],
+                    })
+                  }
+                >
+                  Add photo slot
+                </Button>
+                {content.hero.galleryImagePublicIds.length > 0 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="w-fit gap-1.5 text-destructive"
+                    onClick={() =>
+                      updateHero({
+                        galleryImagePublicIds: content.hero.galleryImagePublicIds.slice(0, -1),
+                      })
+                    }
+                  >
+                    Remove last slot
+                  </Button>
+                )}
+              </div>
 
               <SectionTitle>Popular Searches</SectionTitle>
               <TagListEditor
@@ -471,6 +591,82 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
+          <TabsContent value="mission-vision" className="mt-6">
+            <Card>
+              <p className="text-xs text-muted-foreground">
+                Shown as a section on the homepage, with a full write-up on the /mission-vision
+                page.
+              </p>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Heading">
+                  <Input
+                    value={content.missionVision.heading}
+                    onChange={(e) => updateMissionVisionMeta({ heading: e.target.value })}
+                  />
+                </Field>
+                <Field label="Subheading">
+                  <Input
+                    value={content.missionVision.subheading}
+                    onChange={(e) => updateMissionVisionMeta({ subheading: e.target.value })}
+                  />
+                </Field>
+                <Field label="Mission Title">
+                  <Input
+                    value={content.missionVision.missionTitle}
+                    onChange={(e) => updateMissionVisionMeta({ missionTitle: e.target.value })}
+                  />
+                </Field>
+                <Field label="Vision Title">
+                  <Input
+                    value={content.missionVision.visionTitle}
+                    onChange={(e) => updateMissionVisionMeta({ visionTitle: e.target.value })}
+                  />
+                </Field>
+              </div>
+              <Field label="Mission Text">
+                <Textarea
+                  value={content.missionVision.missionText}
+                  onChange={(e) => updateMissionVisionMeta({ missionText: e.target.value })}
+                  className="min-h-16 resize-none"
+                />
+              </Field>
+              <Field label="Vision Text">
+                <Textarea
+                  value={content.missionVision.visionText}
+                  onChange={(e) => updateMissionVisionMeta({ visionText: e.target.value })}
+                  className="min-h-16 resize-none"
+                />
+              </Field>
+
+              <SectionTitle>Core Values</SectionTitle>
+              <ArrayEditor
+                items={content.missionVision.values}
+                onChange={(values) =>
+                  setContent((c) => ({ ...c, missionVision: { ...c.missionVision, values } }))
+                }
+                newItem={() => ({ icon: "shield-check", title: "New Value", description: "Description" })}
+                addLabel="Add value"
+                minItems={0}
+                renderItem={(value, update) => (
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    <Field label="Icon">
+                      <IconPicker value={value.icon} onChange={(icon) => update({ icon })} />
+                    </Field>
+                    <Field label="Title">
+                      <Input value={value.title} onChange={(e) => update({ title: e.target.value })} />
+                    </Field>
+                    <Field label="Description">
+                      <Input
+                        value={value.description}
+                        onChange={(e) => update({ description: e.target.value })}
+                      />
+                    </Field>
+                  </div>
+                )}
+              />
+            </Card>
+          </TabsContent>
+
           <TabsContent value="contact-bar" className="mt-6">
             <Card>
               <p className="text-xs text-muted-foreground">
@@ -566,11 +762,11 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                 onChange={(stats) =>
                   setContent((c) => ({ ...c, aboutPage: { ...c.aboutPage, stats } }))
                 }
-                newItem={() => ({ icon: "zap", value: "0", label: "New stat" })}
+                newItem={() => ({ icon: "zap", value: "0", label: "New stat", sublabel: "" })}
                 addLabel="Add stat"
                 minItems={1}
                 renderItem={(stat, update) => (
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
                     <Field label="Icon">
                       <IconPicker value={stat.icon} onChange={(icon) => update({ icon })} />
                     </Field>
@@ -579,6 +775,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                     </Field>
                     <Field label="Label">
                       <Input value={stat.label} onChange={(e) => update({ label: e.target.value })} />
+                    </Field>
+                    <Field label="Sublabel">
+                      <Input value={stat.sublabel} onChange={(e) => update({ sublabel: e.target.value })} />
                     </Field>
                   </div>
                 )}
@@ -709,6 +908,29 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                 </Field>
               </div>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="blog" className="mt-6">
+            <div className="flex flex-col gap-6">
+              <Card>
+                <p className="text-xs text-muted-foreground">Content for the /blog page header.</p>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <Field label="Heading">
+                    <Input
+                      value={content.blogPage.heading}
+                      onChange={(e) => updateBlogPage({ heading: e.target.value })}
+                    />
+                  </Field>
+                  <Field label="Subheading">
+                    <Input
+                      value={content.blogPage.subheading}
+                      onChange={(e) => updateBlogPage({ subheading: e.target.value })}
+                    />
+                  </Field>
+                </div>
+              </Card>
+              <BlogPanel />
+            </div>
           </TabsContent>
 
           <TabsContent value="requests" className="mt-6">

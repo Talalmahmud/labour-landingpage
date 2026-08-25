@@ -1,20 +1,24 @@
-import { createElement, type SVGProps } from "react";
+"use client";
 
-import { getIcon } from "@/lib/icons";
+import { LayoutGrid, type LucideProps } from "lucide-react";
+import { DynamicIcon as LucideDynamicIcon, type IconName } from "lucide-react/dynamic";
 
-interface DynamicIconProps extends SVGProps<SVGSVGElement> {
+interface DynamicIconProps extends LucideProps {
   name: string;
 }
 
 /**
- * Renders an icon looked up by key at runtime (e.g. from admin-editable
- * content). Uses `createElement` instead of JSX so the icon isn't a
- * dynamically-assigned JSX tag — React Compiler's static analysis can't
- * see that `getIcon` just returns a stable reference from a fixed
- * registry, and flags `const Icon = getIcon(x); <Icon />` as "creating a
- * component during render" (a real anti-pattern it can't distinguish
- * this lookup from).
+ * Renders an icon looked up by name at runtime (e.g. from admin-editable
+ * content), lazily loading it from Lucide's full icon set so any of the
+ * ~1500 icons can be picked in the admin, not just a small curated list.
+ * Falls back to a generic icon while loading or if the name is invalid.
  */
 export function DynamicIcon({ name, ...props }: DynamicIconProps) {
-  return createElement(getIcon(name), props);
+  return (
+    <LucideDynamicIcon
+      name={name as IconName}
+      fallback={() => <LayoutGrid {...props} />}
+      {...props}
+    />
+  );
 }

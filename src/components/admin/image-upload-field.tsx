@@ -11,9 +11,17 @@ interface ImageUploadFieldProps {
   value: string | null;
   onChange: (publicId: string | null) => void;
   onUploadingChange?: (uploading: boolean) => void;
+  hint?: string;
+  previewTransform?: string;
 }
 
-export function ImageUploadField({ value, onChange, onUploadingChange }: ImageUploadFieldProps) {
+export function ImageUploadField({
+  value,
+  onChange,
+  onUploadingChange,
+  hint = "Falls back to the illustration when no image is set.",
+  previewTransform = "f_auto,q_auto,w_320,h_320,c_fill,g_auto",
+}: ImageUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +56,7 @@ export function ImageUploadField({ value, onChange, onUploadingChange }: ImageUp
       {value ? (
         <div className="relative w-40 overflow-hidden rounded-lg ring-1 ring-border">
           <Image
-            src={cloudinaryUrl(value, "f_auto,q_auto,w_320,h_320,c_fill,g_auto")}
+            src={cloudinaryUrl(value, previewTransform)}
             alt="Hero preview"
             width={320}
             height={320}
@@ -86,7 +94,7 @@ export function ImageUploadField({ value, onChange, onUploadingChange }: ImageUp
       />
 
       {error && <p className="text-xs text-destructive">{error}</p>}
-      <p className="text-xs text-muted-foreground">Falls back to the illustration when no image is set.</p>
+      <p className="text-xs text-muted-foreground">{hint}</p>
     </div>
   );
 }

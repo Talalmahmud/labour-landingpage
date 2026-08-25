@@ -1,10 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HardHat } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { cloudinaryUrl } from "@/lib/cloudinary-url";
+import type { SiteContent } from "@/lib/content-types";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -12,27 +15,43 @@ const links = [
   { label: "Services", href: "/services" },
   { label: "How It Works", href: "/#how-it-works" },
   { label: "Find Labour", href: "/find-labour" },
+  { label: "Mission & Vision", href: "/mission-vision" },
+  { label: "Blog", href: "/blog" },
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
 ];
 
-export function Navbar() {
+interface NavbarProps {
+  content?: SiteContent["siteSettings"];
+}
+
+export function Navbar({ content }: NavbarProps) {
   const pathname = usePathname();
+  const siteName = content?.siteName ?? "Shromik";
+  const tagline = content?.tagline ?? "Service for People";
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
       <div className="mx-auto flex h-20  items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex size-9 items-center justify-center rounded-lg bg-blue-950 text-white">
-            <HardHat className="size-5" />
-          </div>
+          {content?.logoPublicId ? (
+            <Image
+              src={cloudinaryUrl(content.logoPublicId, "f_auto,q_auto,w_96,h_96,c_fit")}
+              alt={siteName}
+              width={36}
+              height={36}
+              className="size-9 rounded-lg object-contain"
+            />
+          ) : (
+            <div className="flex size-9 items-center justify-center rounded-lg bg-blue-950 text-white">
+              <HardHat className="size-5" />
+            </div>
+          )}
           <div className="leading-tight">
             <p className="font-heading text-lg font-bold text-blue-950 dark:text-white">
-              Shromik
+              {siteName}
             </p>
-            <p className="text-[11px] text-muted-foreground">
-              Service for People
-            </p>
+            <p className="text-[11px] text-muted-foreground">{tagline}</p>
           </div>
         </Link>
 

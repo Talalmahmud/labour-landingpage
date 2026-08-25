@@ -1,6 +1,7 @@
 import { ContactBar } from "@/components/landing/contact-bar";
 import { FindLabour } from "@/components/landing/find-labour";
 import { Hero } from "@/components/landing/hero";
+import { MissionVisionTeaser } from "@/components/landing/mission-vision-teaser";
 import { Navbar } from "@/components/landing/navbar";
 import { RequestSection } from "@/components/landing/request-section";
 import { Services } from "@/components/landing/services";
@@ -15,12 +16,13 @@ export default async function Home() {
 
   return (
     <div className="flex flex-1 flex-col bg-background">
-      <Navbar />
+      <Navbar content={content.siteSettings} />
       <main className="flex-1">
         <Hero content={content.hero} workerNames={workerNames} />
         <Services content={content.services} />
         <RequestSection content={content.requestSection} services={content.services.items} />
         <FindLabour content={content.findLabour} />
+        <MissionVisionTeaser content={content.missionVision} />
         <TrustStrip content={content.trustPoints} />
       </main>
       <ContactBar content={content.contact} />

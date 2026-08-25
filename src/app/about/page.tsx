@@ -10,7 +10,7 @@ export default async function AboutPage() {
 
   return (
     <div className="flex flex-1 flex-col bg-background">
-      <Navbar />
+      <Navbar content={content.siteSettings} />
       <main className="flex-1">
         <AboutContent content={content.aboutPage} />
       </main>
