@@ -15,17 +15,23 @@ export function MissionVisionContent({ content }: MissionVisionContentProps) {
           <h1 className="font-heading text-3xl font-extrabold text-blue-950 sm:text-4xl dark:text-white">
             {content.heading}
           </h1>
-          <p className="mt-3 text-base text-muted-foreground">{content.subheading}</p>
+          <p className="mt-3 text-base text-muted-foreground">
+            {content.subheading}
+          </p>
         </div>
       </section>
 
       <section className="mx-auto grid max-w-5xl grid-cols-1 gap-6 px-6 py-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-4 rounded-2xl bg-blue-950 p-8 text-white">
-          <span className="flex size-11 items-center justify-center rounded-full bg-white/10 text-white">
+        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-8">
+          <span className="flex size-11 items-center justify-center rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
             <Target className="size-5" />
           </span>
-          <h2 className="font-heading text-xl font-bold">{content.missionTitle}</h2>
-          <p className="text-sm leading-relaxed text-white/75">{content.missionText}</p>
+          <h2 className="font-heading text-xl font-bold">
+            {content.missionTitle}
+          </h2>
+          <p className="text-sm leading-relaxed text-white/75">
+            {content.missionText}
+          </p>
         </div>
 
         <div className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-8">
@@ -35,7 +41,9 @@ export function MissionVisionContent({ content }: MissionVisionContentProps) {
           <h2 className="font-heading text-xl font-bold text-blue-950 dark:text-white">
             {content.visionTitle}
           </h2>
-          <p className="text-sm leading-relaxed text-muted-foreground">{content.visionText}</p>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {content.visionText}
+          </p>
         </div>
       </section>
 
@@ -56,7 +64,9 @@ export function MissionVisionContent({ content }: MissionVisionContentProps) {
                 <p className="text-sm font-semibold text-blue-950 dark:text-white">
                   {value.title}
                 </p>
-                <p className="text-xs text-muted-foreground">{value.description}</p>
+                <p className="text-xs text-muted-foreground">
+                  {value.description}
+                </p>
               </div>
             ))}
           </div>
