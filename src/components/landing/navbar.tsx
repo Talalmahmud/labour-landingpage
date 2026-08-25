@@ -12,12 +12,12 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+
   { label: "Services", href: "/services" },
   { label: "How It Works", href: "/#how-it-works" },
   { label: "Find Labour", href: "/find-labour" },
-  { label: "Mission & Vision", href: "/mission-vision" },
   { label: "Blog", href: "/blog" },
-  { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
 ];
 
@@ -36,7 +36,10 @@ export function Navbar({ content }: NavbarProps) {
         <Link href="/" className="flex items-center gap-2.5">
           {content?.logoPublicId ? (
             <Image
-              src={cloudinaryUrl(content.logoPublicId, "f_auto,q_auto,w_96,h_96,c_fit")}
+              src={cloudinaryUrl(
+                content.logoPublicId,
+                "f_auto,q_auto,w_96,h_96,c_fit",
+              )}
               alt={siteName}
               width={36}
               height={36}

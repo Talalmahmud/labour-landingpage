@@ -1,6 +1,7 @@
 import { AboutContent } from "@/components/about/about-content";
 import { ContactBar } from "@/components/landing/contact-bar";
 import { Navbar } from "@/components/landing/navbar";
+import { MissionVisionContent } from "@/components/mission-vision/mission-vision-content";
 import { getContent } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
@@ -13,6 +14,7 @@ export default async function AboutPage() {
       <Navbar content={content.siteSettings} />
       <main className="flex-1">
         <AboutContent content={content.aboutPage} />
+        <MissionVisionContent content={content.missionVision} />
       </main>
       <ContactBar content={content.contact} />
     </div>
