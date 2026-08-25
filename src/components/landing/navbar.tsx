@@ -50,7 +50,7 @@ export function Navbar({ content }: NavbarProps) {
               <HardHat className="size-5" />
             </div>
           )}
-          <div className="leading-tight">
+          <div className="leading-tight hidden md:block">
             <p className="font-heading text-lg font-bold text-blue-950 dark:text-white">
               {siteName}
             </p>
