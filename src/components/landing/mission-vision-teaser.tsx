@@ -15,7 +15,9 @@ export function MissionVisionTeaser({ content }: MissionVisionTeaserProps) {
         <h2 className="font-heading text-2xl font-bold text-blue-950 sm:text-3xl dark:text-white">
           {content.heading}
         </h2>
-        <p className="mt-2 text-sm text-muted-foreground">{content.subheading}</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {content.subheading}
+        </p>
       </div>
 
       <div className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2">
@@ -44,7 +46,7 @@ export function MissionVisionTeaser({ content }: MissionVisionTeaserProps) {
         </div>
       </div>
 
-      <div className="mt-8 flex justify-center">
+      {/* <div className="mt-8 flex justify-center">
         <Button
           variant="outline"
           className="gap-2 border-blue-950/15 text-blue-950 dark:text-white"
@@ -54,7 +56,7 @@ export function MissionVisionTeaser({ content }: MissionVisionTeaserProps) {
           Learn More
           <span aria-hidden>→</span>
         </Button>
-      </div>
+      </div> */}
     </section>
   );
 }
