@@ -12,18 +12,22 @@ interface ChoosePathProps {
 
 const THEMES = [
   {
-    cardBg: "bg-linear-to-br from-blue-50 to-white dark:from-blue-950/20 dark:to-background",
+    cardBg:
+      "bg-linear-to-br from-blue-50 to-white dark:from-blue-950/20 dark:to-background",
     hoverRing: "hover:border-blue-400/50 hover:shadow-blue-500/20",
     blob: "bg-blue-400/40",
-    iconWrap: "bg-linear-to-br from-blue-500 to-blue-700 text-white shadow-lg shadow-blue-500/30",
+    iconWrap:
+      "bg-linear-to-br from-blue-500 to-blue-700 text-white shadow-lg shadow-blue-500/30",
     button:
       "bg-linear-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-600/30 hover:from-blue-500 hover:to-blue-600",
   },
   {
-    cardBg: "bg-linear-to-br from-amber-50 to-white dark:from-amber-950/10 dark:to-background",
+    cardBg:
+      "bg-linear-to-br from-amber-50 to-white dark:from-amber-950/10 dark:to-background",
     hoverRing: "hover:border-amber-400/50 hover:shadow-amber-500/20",
     blob: "bg-amber-400/40",
-    iconWrap: "bg-linear-to-br from-amber-400 to-orange-500 text-white shadow-lg shadow-amber-500/30",
+    iconWrap:
+      "bg-linear-to-br from-amber-400 to-orange-500 text-white shadow-lg shadow-amber-500/30",
     button:
       "bg-linear-to-r from-amber-400 to-orange-500 text-blue-950 shadow-lg shadow-amber-500/30 hover:from-amber-300 hover:to-orange-400",
   },
@@ -37,7 +41,10 @@ export function ChoosePath({ content }: ChoosePathProps) {
 
   return (
     <section className="relative overflow-hidden px-6 py-20">
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
         <div className="absolute -top-24 left-1/4 size-80 rounded-full bg-blue-200/40 blur-3xl dark:bg-blue-900/10" />
         <div className="absolute -bottom-24 right-1/4 size-80 rounded-full bg-amber-200/40 blur-3xl dark:bg-amber-900/10" />
       </div>
@@ -46,10 +53,12 @@ export function ChoosePath({ content }: ChoosePathProps) {
         <h2 className="font-heading text-2xl font-bold text-blue-950 sm:text-3xl dark:text-white">
           {content.heading}
         </h2>
-        <p className="mt-2 text-sm text-muted-foreground">{content.subheading}</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {content.subheading}
+        </p>
       </div>
 
-      <div className="relative mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2">
+      <div className="relative mt-10 grid  grid-cols-1 gap-6 sm:grid-cols-2">
         {cards.map((card, i) => {
           const theme = THEMES[i % THEMES.length];
           return (
