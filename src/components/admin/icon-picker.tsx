@@ -1,9 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Combobox } from "@base-ui/react/combobox";
 import { ChevronDownIcon } from "lucide-react";
 
 import { DynamicIcon } from "@/components/ui/dynamic-icon";
+import type { CustomIconDTO } from "@/lib/custom-icons";
+import { parseCustomIconValue, toCustomIconValue } from "@/lib/icon-value";
 import { iconNames } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
@@ -12,17 +15,34 @@ interface IconPickerProps {
   onChange: (value: string) => void;
 }
 
-function filterIconName(itemValue: string, query: string): boolean {
-  return itemValue.toLowerCase().includes(query.trim().toLowerCase());
-}
-
 export function IconPicker({ value, onChange }: IconPickerProps) {
+  const [customIcons, setCustomIcons] = useState<CustomIconDTO[]>([]);
+
+  useEffect(() => {
+    fetch("/api/custom-icons")
+      .then((res) => (res.ok ? res.json() : []))
+      .then(setCustomIcons)
+      .catch(() => {});
+  }, []);
+
+  const labelByValue = new Map<string, string>();
+  for (const icon of customIcons) {
+    labelByValue.set(toCustomIconValue(icon.imagePublicId), icon.name);
+  }
+
+  const items = [...customIcons.map((icon) => toCustomIconValue(icon.imagePublicId)), ...iconNames];
+
+  function filterIcon(itemValue: string, query: string): boolean {
+    const label = labelByValue.get(itemValue) ?? itemValue;
+    return label.toLowerCase().includes(query.trim().toLowerCase());
+  }
+
   return (
     <Combobox.Root
-      items={iconNames}
+      items={items}
       value={value}
       onValueChange={(v) => v && onChange(v)}
-      filter={filterIconName}
+      filter={filterIcon}
       limit={60}
     >
       <Combobox.InputGroup className="relative flex items-center">
@@ -55,7 +75,12 @@ export function IconPicker({ value, onChange }: IconPickerProps) {
                   )}
                 >
                   <DynamicIcon name={item} className="size-4 shrink-0" />
-                  <span className="truncate">{item}</span>
+                  <span className="truncate">{labelByValue.get(item) ?? item}</span>
+                  {parseCustomIconValue(item) && (
+                    <span className="ml-auto shrink-0 text-[10px] text-muted-foreground">
+                      custom
+                    </span>
+                  )}
                 </Combobox.Item>
               )}
             </Combobox.List>

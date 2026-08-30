@@ -4,7 +4,15 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Play, Search, ShieldCheck, Star, MapPin, User } from "lucide-react";
+import {
+  ArrowRight,
+  Play,
+  Search,
+  ShieldCheck,
+  Star,
+  MapPin,
+  User,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,7 +37,10 @@ export function Hero({ content, workerNames }: HeroProps) {
   const badgeInitials =
     workerNames.length > 0 ? workerNames.map(getInitials) : ["SH"];
   const hasVideo = getYouTubeEmbedUrl(content.howItWorksVideoUrl) !== null;
-  const gallerySlots = Array.from({ length: 5 }, (_, i) => content.galleryImagePublicIds[i] ?? null);
+  const gallerySlots = Array.from(
+    { length: 5 },
+    (_, i) => content.galleryImagePublicIds[i] ?? null,
+  );
 
   function handleFindLabour() {
     const query = location.trim();
@@ -43,12 +54,15 @@ export function Hero({ content, workerNames }: HeroProps) {
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-blue-50/60 via-white to-white dark:from-background dark:via-background dark:to-background">
       {/* decorative background layer */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
         <div className="absolute -top-32 -left-24 size-96 rounded-full bg-blue-100/60 blur-3xl dark:bg-blue-900/10" />
         <div className="absolute top-1/3 right-0 size-112 rounded-full bg-blue-100/50 blur-3xl dark:bg-blue-900/10" />
       </div>
 
-      <div className="relative mx-auto max-w-375 px-6 pt-14 pb-16 lg:px-10 lg:pt-20">
+      <div className="relative mx-auto  px-6 pt-14 pb-16 lg:px-10 lg:pt-20">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-10">
           {/* left column */}
           <div className="animate-in fade-in slide-in-from-bottom-4 flex max-w-xl flex-col gap-6 duration-700">
@@ -76,7 +90,10 @@ export function Hero({ content, workerNames }: HeroProps) {
                 nativeButton={false}
               >
                 {content.ctaPrimary}
-                <span aria-hidden className="flex size-9 items-center justify-center rounded-full bg-white text-blue-950">
+                <span
+                  aria-hidden
+                  className="flex size-9 items-center justify-center rounded-full bg-white text-blue-950"
+                >
                   <ArrowRight className="size-4" />
                 </span>
               </Button>
@@ -141,7 +158,9 @@ export function Hero({ content, workerNames }: HeroProps) {
                   {content.ratingValue}{" "}
                   <Star className="size-3.5 fill-amber-400 text-amber-400" />
                 </p>
-                <p className="text-xs text-muted-foreground">{content.ratingLabel}</p>
+                <p className="text-xs text-muted-foreground">
+                  {content.ratingLabel}
+                </p>
               </div>
             </div>
 
@@ -171,7 +190,10 @@ export function Hero({ content, workerNames }: HeroProps) {
                 >
                   {publicId ? (
                     <Image
-                      src={cloudinaryUrl(publicId, "f_auto,q_auto,w_160,h_160,c_fill,g_auto")}
+                      src={cloudinaryUrl(
+                        publicId,
+                        "f_auto,q_auto,w_160,h_160,c_fill,g_auto",
+                      )}
                       alt=""
                       fill
                       sizes="80px"
@@ -284,9 +306,13 @@ function Stat({
         <DynamicIcon name={icon} className="size-5" />
       </span>
       <div className="leading-tight">
-        <p className="text-lg font-bold text-blue-950 dark:text-white">{value}</p>
+        <p className="text-lg font-bold text-blue-950 dark:text-white">
+          {value}
+        </p>
         <p className="text-xs font-medium text-foreground">{label}</p>
-        {sublabel && <p className="text-xs text-muted-foreground">{sublabel}</p>}
+        {sublabel && (
+          <p className="text-xs text-muted-foreground">{sublabel}</p>
+        )}
       </div>
     </div>
   );

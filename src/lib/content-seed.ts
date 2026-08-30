@@ -145,6 +145,22 @@ export const defaultContent: SiteContent = {
       description: "We ensure your complete satisfaction",
     },
   ],
+  choosePath: {
+    heading: "Choose Your Path",
+    subheading: "Whether you need skilled help or you are skilled help, we've got you covered.",
+    hireLabour: {
+      icon: "search",
+      title: "Hire Labour",
+      description: "Browse verified workers and get skilled help for your next job, fast.",
+      buttonLabel: "Hire Labour",
+    },
+    becomeLabour: {
+      icon: "hard-hat",
+      title: "Become a Labour",
+      description: "Join our platform, get matched with jobs, and grow your income.",
+      buttonLabel: "Become a Labour",
+    },
+  },
   missionVision: {
     heading: "Our Mission & Vision",
     subheading: "What drives us and where we're headed.",
@@ -245,5 +261,12 @@ export const defaultContent: SiteContent = {
   blogPage: {
     heading: "The Shromik Blog",
     subheading: "Tips, stories, and updates from the world of skilled labour.",
+  },
+  becomeLabourPage: {
+    heading: "Become a Labour",
+    subheading: "Join Shromik as a verified worker and start getting matched with jobs near you.",
+    formHeading: "Apply to join",
+    submitLabel: "Submit Application",
+    successMessage: "Application received — our team will contact you soon.",
   },
 };

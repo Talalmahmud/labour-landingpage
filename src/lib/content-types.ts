@@ -51,6 +51,13 @@ export interface TeamMember {
   imagePublicId: string | null;
 }
 
+export interface ChoosePathOption {
+  icon: string;
+  title: string;
+  description: string;
+  buttonLabel: string;
+}
+
 export interface SiteContent {
   siteSettings: {
     logoPublicId: string | null;
@@ -95,6 +102,12 @@ export interface SiteContent {
     mapPins: MapPin[];
   };
   trustPoints: TrustPoint[];
+  choosePath: {
+    heading: string;
+    subheading: string;
+    hireLabour: ChoosePathOption;
+    becomeLabour: ChoosePathOption;
+  };
   missionVision: {
     heading: string;
     subheading: string;
@@ -143,5 +156,12 @@ export interface SiteContent {
   blogPage: {
     heading: string;
     subheading: string;
+  };
+  becomeLabourPage: {
+    heading: string;
+    subheading: string;
+    formHeading: string;
+    submitLabel: string;
+    successMessage: string;
   };
 }

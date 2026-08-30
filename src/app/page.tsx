@@ -1,3 +1,4 @@
+import { ChoosePath } from "@/components/landing/choose-path";
 import { ContactBar } from "@/components/landing/contact-bar";
 import { FindLabour } from "@/components/landing/find-labour";
 import { Hero } from "@/components/landing/hero";
@@ -19,6 +20,7 @@ export default async function Home() {
       <Navbar content={content.siteSettings} />
       <main className="flex-1">
         <Hero content={content.hero} workerNames={workerNames} />
+        <ChoosePath content={content.choosePath} />
         <Services content={content.services} />
         <RequestSection content={content.requestSection} services={content.services.items} />
         <FindLabour content={content.findLabour} />

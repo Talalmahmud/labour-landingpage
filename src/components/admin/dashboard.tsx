@@ -2,7 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ClipboardList, ExternalLink, HardHat, LogOut, Loader2, Mail, Trash2 } from "lucide-react";
+import {
+  ClipboardList,
+  ExternalLink,
+  HardHat,
+  LogOut,
+  Loader2,
+  Mail,
+  Trash2,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,11 +25,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrayEditor } from "@/components/admin/array-editor";
 import { BlogPanel } from "@/components/admin/blog-panel";
+import { IconLibraryPanel } from "@/components/admin/icon-library-panel";
 import { Field } from "@/components/admin/field";
 import { IconPicker } from "@/components/admin/icon-picker";
 import { ImageUploadField } from "@/components/admin/image-upload-field";
 import type { ContactMessageDTO } from "@/lib/messages";
 import type { LabourRequestDTO } from "@/lib/requests";
+import type { WorkerApplicationDTO } from "@/lib/worker-applications";
 import type { RoleTone, SiteContent } from "@/lib/content-types";
 
 interface AdminDashboardProps {
@@ -30,7 +40,11 @@ interface AdminDashboardProps {
 
 type SaveState = "idle" | "saving" | "saved" | "error";
 
-const ROLE_TONE_LABELS: Record<RoleTone, string> = { blue: "Blue", green: "Green", amber: "Amber" };
+const ROLE_TONE_LABELS: Record<RoleTone, string> = {
+  blue: "Blue",
+  green: "Green",
+  amber: "Amber",
+};
 
 export function AdminDashboard({ initialContent }: AdminDashboardProps) {
   const router = useRouter();
@@ -43,31 +57,85 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
     setUploadingCount((c) => Math.max(0, c + (uploading ? 1 : -1)));
 
   const updateSiteSettings = (patch: Partial<SiteContent["siteSettings"]>) =>
-    setContent((c) => ({ ...c, siteSettings: { ...c.siteSettings, ...patch } }));
+    setContent((c) => ({
+      ...c,
+      siteSettings: { ...c.siteSettings, ...patch },
+    }));
   const updateHero = (patch: Partial<SiteContent["hero"]>) =>
     setContent((c) => ({ ...c, hero: { ...c.hero, ...patch } }));
-  const updateServicesMeta = (patch: Partial<Omit<SiteContent["services"], "items">>) =>
-    setContent((c) => ({ ...c, services: { ...c.services, ...patch } }));
-  const updateRequestSection = (patch: Partial<Omit<SiteContent["requestSection"], "steps">>) =>
-    setContent((c) => ({ ...c, requestSection: { ...c.requestSection, ...patch } }));
+  const updateServicesMeta = (
+    patch: Partial<Omit<SiteContent["services"], "items">>,
+  ) => setContent((c) => ({ ...c, services: { ...c.services, ...patch } }));
+  const updateRequestSection = (
+    patch: Partial<Omit<SiteContent["requestSection"], "steps">>,
+  ) =>
+    setContent((c) => ({
+      ...c,
+      requestSection: { ...c.requestSection, ...patch },
+    }));
   const updateFindLabourMeta = (
-    patch: Partial<Omit<SiteContent["findLabour"], "workers" | "mapPins">>
+    patch: Partial<Omit<SiteContent["findLabour"], "workers" | "mapPins">>,
   ) => setContent((c) => ({ ...c, findLabour: { ...c.findLabour, ...patch } }));
+  const updateChoosePathMeta = (
+    patch: Partial<
+      Omit<SiteContent["choosePath"], "hireLabour" | "becomeLabour">
+    >,
+  ) => setContent((c) => ({ ...c, choosePath: { ...c.choosePath, ...patch } }));
+  const updateHireLabourCard = (
+    patch: Partial<SiteContent["choosePath"]["hireLabour"]>,
+  ) =>
+    setContent((c) => ({
+      ...c,
+      choosePath: {
+        ...c.choosePath,
+        hireLabour: { ...c.choosePath.hireLabour, ...patch },
+      },
+    }));
+  const updateBecomeLabourCard = (
+    patch: Partial<SiteContent["choosePath"]["becomeLabour"]>,
+  ) =>
+    setContent((c) => ({
+      ...c,
+      choosePath: {
+        ...c.choosePath,
+        becomeLabour: { ...c.choosePath.becomeLabour, ...patch },
+      },
+    }));
   const updateMissionVisionMeta = (
-    patch: Partial<Omit<SiteContent["missionVision"], "values">>
-  ) => setContent((c) => ({ ...c, missionVision: { ...c.missionVision, ...patch } }));
+    patch: Partial<Omit<SiteContent["missionVision"], "values">>,
+  ) =>
+    setContent((c) => ({
+      ...c,
+      missionVision: { ...c.missionVision, ...patch },
+    }));
   const updateContact = (patch: Partial<SiteContent["contact"]>) =>
     setContent((c) => ({ ...c, contact: { ...c.contact, ...patch } }));
-  const updateAboutPage = (patch: Partial<Omit<SiteContent["aboutPage"], "stats" | "team">>) =>
-    setContent((c) => ({ ...c, aboutPage: { ...c.aboutPage, ...patch } }));
+  const updateAboutPage = (
+    patch: Partial<Omit<SiteContent["aboutPage"], "stats" | "team">>,
+  ) => setContent((c) => ({ ...c, aboutPage: { ...c.aboutPage, ...patch } }));
   const updateContactPage = (patch: Partial<SiteContent["contactPage"]>) =>
     setContent((c) => ({ ...c, contactPage: { ...c.contactPage, ...patch } }));
   const updateServicesPage = (patch: Partial<SiteContent["servicesPage"]>) =>
-    setContent((c) => ({ ...c, servicesPage: { ...c.servicesPage, ...patch } }));
-  const updateFindLabourPage = (patch: Partial<SiteContent["findLabourPage"]>) =>
-    setContent((c) => ({ ...c, findLabourPage: { ...c.findLabourPage, ...patch } }));
+    setContent((c) => ({
+      ...c,
+      servicesPage: { ...c.servicesPage, ...patch },
+    }));
+  const updateFindLabourPage = (
+    patch: Partial<SiteContent["findLabourPage"]>,
+  ) =>
+    setContent((c) => ({
+      ...c,
+      findLabourPage: { ...c.findLabourPage, ...patch },
+    }));
   const updateBlogPage = (patch: Partial<SiteContent["blogPage"]>) =>
     setContent((c) => ({ ...c, blogPage: { ...c.blogPage, ...patch } }));
+  const updateBecomeLabourPage = (
+    patch: Partial<SiteContent["becomeLabourPage"]>,
+  ) =>
+    setContent((c) => ({
+      ...c,
+      becomeLabourPage: { ...c.becomeLabourPage, ...patch },
+    }));
 
   async function handleSave() {
     setSaveState("saving");
@@ -87,7 +155,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
       setTimeout(() => setSaveState((s) => (s === "saved" ? "idle" : s)), 2500);
     } catch (err) {
       setSaveState("error");
-      setErrorMessage(err instanceof Error ? err.message : "Failed to save changes");
+      setErrorMessage(
+        err instanceof Error ? err.message : "Failed to save changes",
+      );
     }
   }
 
@@ -100,14 +170,16 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
   return (
     <div className="min-h-screen bg-muted/30 pb-16">
       <header className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-4">
+        <div className="flex not-even: items-center justify-between gap-4 px-6 py-4">
           <div className="flex items-center gap-2.5">
             <div className="flex size-9 items-center justify-center rounded-lg bg-blue-950 text-white">
               <HardHat className="size-4" />
             </div>
             <div className="leading-tight">
-              <p className="font-heading text-sm font-semibold">Shromik Admin</p>
-              <p className="text-xs text-muted-foreground">Manage your site content</p>
+              <p className="font-heading text-sm font-semibold"> Admin</p>
+              <p className="text-xs text-muted-foreground">
+                Manage your site content
+              </p>
             </div>
           </div>
 
@@ -119,7 +191,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <span className="text-sm text-destructive">{errorMessage}</span>
             )}
             {uploadingCount > 0 && (
-              <span className="text-sm text-muted-foreground">Uploading image…</span>
+              <span className="text-sm text-muted-foreground">
+                Uploading image…
+              </span>
             )}
             <Button
               variant="outline"
@@ -131,7 +205,12 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <ExternalLink className="size-3.5" />
               View Site
             </Button>
-            <Button variant="ghost" size="sm" className="gap-1.5" onClick={handleLogout}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-1.5"
+              onClick={handleLogout}
+            >
               <LogOut className="size-3.5" />
               Logout
             </Button>
@@ -141,31 +220,94 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               onClick={handleSave}
               disabled={saveState === "saving" || uploadingCount > 0}
             >
-              {saveState === "saving" && <Loader2 className="size-3.5 animate-spin" />}
+              {saveState === "saving" && (
+                <Loader2 className="size-3.5 animate-spin" />
+              )}
               Save Changes
             </Button>
           </div>
         </div>
       </header>
 
-      <div className="mx-auto max-w-5xl px-6 py-8">
-        <Tabs defaultValue="hero">
-          <TabsList className="flex-wrap">
-            <TabsTrigger value="site-settings">Site Settings</TabsTrigger>
-            <TabsTrigger value="hero">Hero</TabsTrigger>
-            <TabsTrigger value="services">Services</TabsTrigger>
-            <TabsTrigger value="steps">Steps</TabsTrigger>
-            <TabsTrigger value="workers">Workers</TabsTrigger>
-            <TabsTrigger value="trust">Trust Points</TabsTrigger>
-            <TabsTrigger value="mission-vision">Mission & Vision</TabsTrigger>
-            <TabsTrigger value="contact-bar">Contact Bar</TabsTrigger>
-            <TabsTrigger value="about-page">About Page</TabsTrigger>
-            <TabsTrigger value="contact-page">Contact Page</TabsTrigger>
-            <TabsTrigger value="services-page">Services Page</TabsTrigger>
-            <TabsTrigger value="find-labour-page">Find Labour Page</TabsTrigger>
-            <TabsTrigger value="blog">Blog</TabsTrigger>
-            <TabsTrigger value="requests">Requests</TabsTrigger>
-            <TabsTrigger value="messages">Messages</TabsTrigger>
+      <div className=" px-6 pb-8">
+        <Tabs
+          defaultValue="hero"
+          orientation="vertical"
+          className="flex-col items-start gap-6 lg:flex-row lg:gap-8"
+        >
+          <TabsList className="w-full items-stretch lg:w-56 lg:shrink-0 lg:self-start lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
+            <TabsTrigger
+              className=" hover:cursor-pointer"
+              value="site-settings"
+            >
+              Site Settings
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="icon-library">
+              Icon Library
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="hero">
+              Hero
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="services">
+              Services
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="steps">
+              Steps
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="workers">
+              Workers
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="trust">
+              Trust Points
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="choose-path">
+              Choose Path
+            </TabsTrigger>
+            <TabsTrigger
+              className=" hover:cursor-pointer"
+              value="mission-vision"
+            >
+              Mission & Vision
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="contact-bar">
+              Contact Bar
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="about-page">
+              About Page
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="contact-page">
+              Contact Page
+            </TabsTrigger>
+            <TabsTrigger
+              className=" hover:cursor-pointer"
+              value="services-page"
+            >
+              Services Page
+            </TabsTrigger>
+            <TabsTrigger
+              className=" hover:cursor-pointer"
+              value="find-labour-page"
+            >
+              Find Labour Page
+            </TabsTrigger>
+            <TabsTrigger
+              className=" hover:cursor-pointer"
+              value="become-labour-page"
+            >
+              Become Labour Page
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="blog">
+              Blog
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="requests">
+              Requests
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="applications">
+              Applications
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="messages">
+              Messages
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="site-settings" className="mt-6">
@@ -176,7 +318,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <Field label="Logo">
                 <ImageUploadField
                   value={content.siteSettings.logoPublicId}
-                  onChange={(logoPublicId) => updateSiteSettings({ logoPublicId })}
+                  onChange={(logoPublicId) =>
+                    updateSiteSettings({ logoPublicId })
+                  }
                   onUploadingChange={trackUploading}
                   hint="Falls back to the default icon when no logo is set."
                   previewTransform="f_auto,q_auto,w_160,h_160,c_fit"
@@ -186,17 +330,25 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                 <Field label="Site Name">
                   <Input
                     value={content.siteSettings.siteName}
-                    onChange={(e) => updateSiteSettings({ siteName: e.target.value })}
+                    onChange={(e) =>
+                      updateSiteSettings({ siteName: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Tagline">
                   <Input
                     value={content.siteSettings.tagline}
-                    onChange={(e) => updateSiteSettings({ tagline: e.target.value })}
+                    onChange={(e) =>
+                      updateSiteSettings({ tagline: e.target.value })
+                    }
                   />
                 </Field>
               </div>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="icon-library" className="mt-6">
+            <IconLibraryPanel />
           </TabsContent>
 
           <TabsContent value="hero" className="mt-6">
@@ -211,13 +363,24 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <Field label="Title Line 1">
-                  <Input value={content.hero.titleLine1} onChange={(e) => updateHero({ titleLine1: e.target.value })} />
+                  <Input
+                    value={content.hero.titleLine1}
+                    onChange={(e) => updateHero({ titleLine1: e.target.value })}
+                  />
                 </Field>
                 <Field label="Title Line 2">
-                  <Input value={content.hero.titleLine2} onChange={(e) => updateHero({ titleLine2: e.target.value })} />
+                  <Input
+                    value={content.hero.titleLine2}
+                    onChange={(e) => updateHero({ titleLine2: e.target.value })}
+                  />
                 </Field>
                 <Field label="Title Highlight">
-                  <Input value={content.hero.titleHighlight} onChange={(e) => updateHero({ titleHighlight: e.target.value })} />
+                  <Input
+                    value={content.hero.titleHighlight}
+                    onChange={(e) =>
+                      updateHero({ titleHighlight: e.target.value })
+                    }
+                  />
                 </Field>
               </div>
 
@@ -231,35 +394,70 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Primary CTA">
-                  <Input value={content.hero.ctaPrimary} onChange={(e) => updateHero({ ctaPrimary: e.target.value })} />
+                  <Input
+                    value={content.hero.ctaPrimary}
+                    onChange={(e) => updateHero({ ctaPrimary: e.target.value })}
+                  />
                 </Field>
                 <Field label="Secondary CTA">
-                  <Input value={content.hero.ctaSecondary} onChange={(e) => updateHero({ ctaSecondary: e.target.value })} />
+                  <Input
+                    value={content.hero.ctaSecondary}
+                    onChange={(e) =>
+                      updateHero({ ctaSecondary: e.target.value })
+                    }
+                  />
                 </Field>
-                <Field label="How It Works Video (YouTube URL)" className="sm:col-span-2">
+                <Field
+                  label="How It Works Video (YouTube URL)"
+                  className="sm:col-span-2"
+                >
                   <Input
                     value={content.hero.howItWorksVideoUrl}
-                    onChange={(e) => updateHero({ howItWorksVideoUrl: e.target.value })}
+                    onChange={(e) =>
+                      updateHero({ howItWorksVideoUrl: e.target.value })
+                    }
                     placeholder="https://www.youtube.com/watch?v=..."
                   />
                 </Field>
                 <Field label="Rating Value">
-                  <Input value={content.hero.ratingValue} onChange={(e) => updateHero({ ratingValue: e.target.value })} />
+                  <Input
+                    value={content.hero.ratingValue}
+                    onChange={(e) =>
+                      updateHero({ ratingValue: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="Rating Label">
-                  <Input value={content.hero.ratingLabel} onChange={(e) => updateHero({ ratingLabel: e.target.value })} />
+                  <Input
+                    value={content.hero.ratingLabel}
+                    onChange={(e) =>
+                      updateHero({ ratingLabel: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="Search Heading">
-                  <Input value={content.hero.searchHeading} onChange={(e) => updateHero({ searchHeading: e.target.value })} />
+                  <Input
+                    value={content.hero.searchHeading}
+                    onChange={(e) =>
+                      updateHero({ searchHeading: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="Search Placeholder">
                   <Input
                     value={content.hero.searchPlaceholder}
-                    onChange={(e) => updateHero({ searchPlaceholder: e.target.value })}
+                    onChange={(e) =>
+                      updateHero({ searchPlaceholder: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Search Button Label">
-                  <Input value={content.hero.searchButton} onChange={(e) => updateHero({ searchButton: e.target.value })} />
+                  <Input
+                    value={content.hero.searchButton}
+                    onChange={(e) =>
+                      updateHero({ searchButton: e.target.value })
+                    }
+                  />
                 </Field>
               </div>
 
@@ -267,22 +465,39 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <ArrayEditor
                 items={content.hero.stats}
                 onChange={(stats) => updateHero({ stats })}
-                newItem={() => ({ icon: "zap", value: "0", label: "New stat", sublabel: "" })}
+                newItem={() => ({
+                  icon: "zap",
+                  value: "0",
+                  label: "New stat",
+                  sublabel: "",
+                })}
                 addLabel="Add stat"
                 minItems={1}
                 renderItem={(stat, update) => (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
                     <Field label="Icon">
-                      <IconPicker value={stat.icon} onChange={(icon) => update({ icon })} />
+                      <IconPicker
+                        value={stat.icon}
+                        onChange={(icon) => update({ icon })}
+                      />
                     </Field>
                     <Field label="Value">
-                      <Input value={stat.value} onChange={(e) => update({ value: e.target.value })} />
+                      <Input
+                        value={stat.value}
+                        onChange={(e) => update({ value: e.target.value })}
+                      />
                     </Field>
                     <Field label="Label">
-                      <Input value={stat.label} onChange={(e) => update({ label: e.target.value })} />
+                      <Input
+                        value={stat.label}
+                        onChange={(e) => update({ label: e.target.value })}
+                      />
                     </Field>
                     <Field label="Sublabel">
-                      <Input value={stat.sublabel} onChange={(e) => update({ sublabel: e.target.value })} />
+                      <Input
+                        value={stat.sublabel}
+                        onChange={(e) => update({ sublabel: e.target.value })}
+                      />
                     </Field>
                   </div>
                 )}
@@ -290,7 +505,8 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
 
               <SectionTitle>Feature Badges</SectionTitle>
               <p className="-mt-3 text-xs text-muted-foreground">
-                The small pills shown under the hero buttons (e.g. &quot;Verified Workers&quot;).
+                The small pills shown under the hero buttons (e.g.
+                &quot;Verified Workers&quot;).
               </p>
               <ArrayEditor
                 items={content.hero.badges}
@@ -301,10 +517,16 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                 renderItem={(badge, update) => (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <Field label="Icon">
-                      <IconPicker value={badge.icon} onChange={(icon) => update({ icon })} />
+                      <IconPicker
+                        value={badge.icon}
+                        onChange={(icon) => update({ icon })}
+                      />
                     </Field>
                     <Field label="Label">
-                      <Input value={badge.label} onChange={(e) => update({ label: e.target.value })} />
+                      <Input
+                        value={badge.label}
+                        onChange={(e) => update({ label: e.target.value })}
+                      />
                     </Field>
                   </div>
                 )}
@@ -321,9 +543,10 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                     value={publicId}
                     onChange={(next) =>
                       updateHero({
-                        galleryImagePublicIds: content.hero.galleryImagePublicIds.map((p, i) =>
-                          i === index ? next : p,
-                        ),
+                        galleryImagePublicIds:
+                          content.hero.galleryImagePublicIds.map((p, i) =>
+                            i === index ? next : p,
+                          ),
                       })
                     }
                     onUploadingChange={trackUploading}
@@ -340,7 +563,10 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                   className="w-fit gap-1.5"
                   onClick={() =>
                     updateHero({
-                      galleryImagePublicIds: [...content.hero.galleryImagePublicIds, null],
+                      galleryImagePublicIds: [
+                        ...content.hero.galleryImagePublicIds,
+                        null,
+                      ],
                     })
                   }
                 >
@@ -354,7 +580,8 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                     className="w-fit gap-1.5 text-destructive"
                     onClick={() =>
                       updateHero({
-                        galleryImagePublicIds: content.hero.galleryImagePublicIds.slice(0, -1),
+                        galleryImagePublicIds:
+                          content.hero.galleryImagePublicIds.slice(0, -1),
                       })
                     }
                   >
@@ -375,12 +602,19 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             <Card>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Section Heading">
-                  <Input value={content.services.heading} onChange={(e) => updateServicesMeta({ heading: e.target.value })} />
+                  <Input
+                    value={content.services.heading}
+                    onChange={(e) =>
+                      updateServicesMeta({ heading: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="Section Subheading">
                   <Input
                     value={content.services.subheading}
-                    onChange={(e) => updateServicesMeta({ subheading: e.target.value })}
+                    onChange={(e) =>
+                      updateServicesMeta({ subheading: e.target.value })
+                    }
                   />
                 </Field>
               </div>
@@ -388,20 +622,40 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <SectionTitle>Services</SectionTitle>
               <ArrayEditor
                 items={content.services.items}
-                onChange={(items) => setContent((c) => ({ ...c, services: { ...c.services, items } }))}
-                newItem={() => ({ icon: "wrench", title: "New Service", description: "Description" })}
+                onChange={(items) =>
+                  setContent((c) => ({
+                    ...c,
+                    services: { ...c.services, items },
+                  }))
+                }
+                newItem={() => ({
+                  icon: "wrench",
+                  title: "New Service",
+                  description: "Description",
+                })}
                 addLabel="Add service"
                 minItems={1}
                 renderItem={(service, update) => (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <Field label="Icon">
-                      <IconPicker value={service.icon} onChange={(icon) => update({ icon })} />
+                      <IconPicker
+                        value={service.icon}
+                        onChange={(icon) => update({ icon })}
+                      />
                     </Field>
                     <Field label="Title">
-                      <Input value={service.title} onChange={(e) => update({ title: e.target.value })} />
+                      <Input
+                        value={service.title}
+                        onChange={(e) => update({ title: e.target.value })}
+                      />
                     </Field>
                     <Field label="Description">
-                      <Input value={service.description} onChange={(e) => update({ description: e.target.value })} />
+                      <Input
+                        value={service.description}
+                        onChange={(e) =>
+                          update({ description: e.target.value })
+                        }
+                      />
                     </Field>
                   </div>
                 )}
@@ -415,25 +669,33 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                 <Field label="Heading Line 1">
                   <Input
                     value={content.requestSection.headingLine1}
-                    onChange={(e) => updateRequestSection({ headingLine1: e.target.value })}
+                    onChange={(e) =>
+                      updateRequestSection({ headingLine1: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Heading Highlight">
                   <Input
                     value={content.requestSection.headingHighlight}
-                    onChange={(e) => updateRequestSection({ headingHighlight: e.target.value })}
+                    onChange={(e) =>
+                      updateRequestSection({ headingHighlight: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Form Heading">
                   <Input
                     value={content.requestSection.formHeading}
-                    onChange={(e) => updateRequestSection({ formHeading: e.target.value })}
+                    onChange={(e) =>
+                      updateRequestSection({ formHeading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Submit Button Label">
                   <Input
                     value={content.requestSection.submitLabel}
-                    onChange={(e) => updateRequestSection({ submitLabel: e.target.value })}
+                    onChange={(e) =>
+                      updateRequestSection({ submitLabel: e.target.value })
+                    }
                   />
                 </Field>
               </div>
@@ -442,18 +704,32 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <ArrayEditor
                 items={content.requestSection.steps}
                 onChange={(steps) =>
-                  setContent((c) => ({ ...c, requestSection: { ...c.requestSection, steps } }))
+                  setContent((c) => ({
+                    ...c,
+                    requestSection: { ...c.requestSection, steps },
+                  }))
                 }
-                newItem={() => ({ title: "New Step", description: "Description" })}
+                newItem={() => ({
+                  title: "New Step",
+                  description: "Description",
+                })}
                 addLabel="Add step"
                 minItems={1}
                 renderItem={(step, update) => (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <Field label="Title">
-                      <Input value={step.title} onChange={(e) => update({ title: e.target.value })} />
+                      <Input
+                        value={step.title}
+                        onChange={(e) => update({ title: e.target.value })}
+                      />
                     </Field>
                     <Field label="Description">
-                      <Input value={step.description} onChange={(e) => update({ description: e.target.value })} />
+                      <Input
+                        value={step.description}
+                        onChange={(e) =>
+                          update({ description: e.target.value })
+                        }
+                      />
                     </Field>
                   </div>
                 )}
@@ -467,13 +743,17 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                 <Field label="Section Heading">
                   <Input
                     value={content.findLabour.heading}
-                    onChange={(e) => updateFindLabourMeta({ heading: e.target.value })}
+                    onChange={(e) =>
+                      updateFindLabourMeta({ heading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Section Subheading">
                   <Input
                     value={content.findLabour.subheading}
-                    onChange={(e) => updateFindLabourMeta({ subheading: e.target.value })}
+                    onChange={(e) =>
+                      updateFindLabourMeta({ subheading: e.target.value })
+                    }
                   />
                 </Field>
               </div>
@@ -482,7 +762,10 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <ArrayEditor
                 items={content.findLabour.workers}
                 onChange={(workers) =>
-                  setContent((c) => ({ ...c, findLabour: { ...c.findLabour, workers } }))
+                  setContent((c) => ({
+                    ...c,
+                    findLabour: { ...c.findLabour, workers },
+                  }))
                 }
                 newItem={() => ({
                   name: "New Worker",
@@ -497,15 +780,23 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                 renderItem={(worker, update) => (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <Field label="Name">
-                      <Input value={worker.name} onChange={(e) => update({ name: e.target.value })} />
+                      <Input
+                        value={worker.name}
+                        onChange={(e) => update({ name: e.target.value })}
+                      />
                     </Field>
                     <Field label="Role">
-                      <Input value={worker.role} onChange={(e) => update({ role: e.target.value })} />
+                      <Input
+                        value={worker.role}
+                        onChange={(e) => update({ role: e.target.value })}
+                      />
                     </Field>
                     <Field label="Role Color">
                       <Select
                         value={worker.roleTone}
-                        onValueChange={(v) => v && update({ roleTone: v as RoleTone })}
+                        onValueChange={(v) =>
+                          v && update({ roleTone: v as RoleTone })
+                        }
                       >
                         <SelectTrigger className="w-full">
                           <SelectValue>
@@ -526,14 +817,22 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                         min="0"
                         max="5"
                         value={worker.rating}
-                        onChange={(e) => update({ rating: Number(e.target.value) })}
+                        onChange={(e) =>
+                          update({ rating: Number(e.target.value) })
+                        }
                       />
                     </Field>
                     <Field label="Experience">
-                      <Input value={worker.experience} onChange={(e) => update({ experience: e.target.value })} />
+                      <Input
+                        value={worker.experience}
+                        onChange={(e) => update({ experience: e.target.value })}
+                      />
                     </Field>
                     <Field label="Location">
-                      <Input value={worker.location} onChange={(e) => update({ location: e.target.value })} />
+                      <Input
+                        value={worker.location}
+                        onChange={(e) => update({ location: e.target.value })}
+                      />
                     </Field>
                   </div>
                 )}
@@ -543,7 +842,10 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <ArrayEditor
                 items={content.findLabour.mapPins}
                 onChange={(mapPins) =>
-                  setContent((c) => ({ ...c, findLabour: { ...c.findLabour, mapPins } }))
+                  setContent((c) => ({
+                    ...c,
+                    findLabour: { ...c.findLabour, mapPins },
+                  }))
                 }
                 newItem={() => ({ label: "New Area", top: "50%", left: "50%" })}
                 addLabel="Add pin"
@@ -551,13 +853,22 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                 renderItem={(pin, update) => (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <Field label="Label">
-                      <Input value={pin.label} onChange={(e) => update({ label: e.target.value })} />
+                      <Input
+                        value={pin.label}
+                        onChange={(e) => update({ label: e.target.value })}
+                      />
                     </Field>
                     <Field label="Top (%)">
-                      <Input value={pin.top} onChange={(e) => update({ top: e.target.value })} />
+                      <Input
+                        value={pin.top}
+                        onChange={(e) => update({ top: e.target.value })}
+                      />
                     </Field>
                     <Field label="Left (%)">
-                      <Input value={pin.left} onChange={(e) => update({ left: e.target.value })} />
+                      <Input
+                        value={pin.left}
+                        onChange={(e) => update({ left: e.target.value })}
+                      />
                     </Field>
                   </div>
                 )}
@@ -570,20 +881,37 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <SectionTitle>Trust Points</SectionTitle>
               <ArrayEditor
                 items={content.trustPoints}
-                onChange={(trustPoints) => setContent((c) => ({ ...c, trustPoints }))}
-                newItem={() => ({ icon: "shield-check", title: "New Point", description: "Description" })}
+                onChange={(trustPoints) =>
+                  setContent((c) => ({ ...c, trustPoints }))
+                }
+                newItem={() => ({
+                  icon: "shield-check",
+                  title: "New Point",
+                  description: "Description",
+                })}
                 addLabel="Add trust point"
                 minItems={1}
                 renderItem={(point, update) => (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <Field label="Icon">
-                      <IconPicker value={point.icon} onChange={(icon) => update({ icon })} />
+                      <IconPicker
+                        value={point.icon}
+                        onChange={(icon) => update({ icon })}
+                      />
                     </Field>
                     <Field label="Title">
-                      <Input value={point.title} onChange={(e) => update({ title: e.target.value })} />
+                      <Input
+                        value={point.title}
+                        onChange={(e) => update({ title: e.target.value })}
+                      />
                     </Field>
                     <Field label="Description">
-                      <Input value={point.description} onChange={(e) => update({ description: e.target.value })} />
+                      <Input
+                        value={point.description}
+                        onChange={(e) =>
+                          update({ description: e.target.value })
+                        }
+                      />
                     </Field>
                   </div>
                 )}
@@ -591,49 +919,156 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
+          <TabsContent value="choose-path" className="mt-6">
+            <Card>
+              <p className="text-xs text-muted-foreground">
+                The &quot;Hire Labour&quot; / &quot;Become a Labour&quot;
+                section shown on the homepage, right below the hero.
+              </p>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Heading">
+                  <Input
+                    value={content.choosePath.heading}
+                    onChange={(e) =>
+                      updateChoosePathMeta({ heading: e.target.value })
+                    }
+                  />
+                </Field>
+                <Field label="Subheading">
+                  <Input
+                    value={content.choosePath.subheading}
+                    onChange={(e) =>
+                      updateChoosePathMeta({ subheading: e.target.value })
+                    }
+                  />
+                </Field>
+              </div>
+
+              <SectionTitle>Hire Labour Card</SectionTitle>
+              <div className="grid grid-cols-1 gap-3 rounded-lg border border-border p-4 sm:grid-cols-2">
+                <Field label="Icon">
+                  <IconPicker
+                    value={content.choosePath.hireLabour.icon}
+                    onChange={(icon) => updateHireLabourCard({ icon })}
+                  />
+                </Field>
+                <Field label="Title">
+                  <Input
+                    value={content.choosePath.hireLabour.title}
+                    onChange={(e) =>
+                      updateHireLabourCard({ title: e.target.value })
+                    }
+                  />
+                </Field>
+                <Field label="Description" className="sm:col-span-2">
+                  <Input
+                    value={content.choosePath.hireLabour.description}
+                    onChange={(e) =>
+                      updateHireLabourCard({ description: e.target.value })
+                    }
+                  />
+                </Field>
+                <Field label="Button Label">
+                  <Input
+                    value={content.choosePath.hireLabour.buttonLabel}
+                    onChange={(e) =>
+                      updateHireLabourCard({ buttonLabel: e.target.value })
+                    }
+                  />
+                </Field>
+              </div>
+
+              <SectionTitle>Become a Labour Card</SectionTitle>
+              <div className="grid grid-cols-1 gap-3 rounded-lg border border-border p-4 sm:grid-cols-2">
+                <Field label="Icon">
+                  <IconPicker
+                    value={content.choosePath.becomeLabour.icon}
+                    onChange={(icon) => updateBecomeLabourCard({ icon })}
+                  />
+                </Field>
+                <Field label="Title">
+                  <Input
+                    value={content.choosePath.becomeLabour.title}
+                    onChange={(e) =>
+                      updateBecomeLabourCard({ title: e.target.value })
+                    }
+                  />
+                </Field>
+                <Field label="Description" className="sm:col-span-2">
+                  <Input
+                    value={content.choosePath.becomeLabour.description}
+                    onChange={(e) =>
+                      updateBecomeLabourCard({ description: e.target.value })
+                    }
+                  />
+                </Field>
+                <Field label="Button Label">
+                  <Input
+                    value={content.choosePath.becomeLabour.buttonLabel}
+                    onChange={(e) =>
+                      updateBecomeLabourCard({ buttonLabel: e.target.value })
+                    }
+                  />
+                </Field>
+              </div>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="mission-vision" className="mt-6">
             <Card>
               <p className="text-xs text-muted-foreground">
-                Shown as a section on the homepage, with a full write-up on the /mission-vision
-                page.
+                Shown as a section on the homepage, with a full write-up on the
+                /mission-vision page.
               </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Heading">
                   <Input
                     value={content.missionVision.heading}
-                    onChange={(e) => updateMissionVisionMeta({ heading: e.target.value })}
+                    onChange={(e) =>
+                      updateMissionVisionMeta({ heading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Subheading">
                   <Input
                     value={content.missionVision.subheading}
-                    onChange={(e) => updateMissionVisionMeta({ subheading: e.target.value })}
+                    onChange={(e) =>
+                      updateMissionVisionMeta({ subheading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Mission Title">
                   <Input
                     value={content.missionVision.missionTitle}
-                    onChange={(e) => updateMissionVisionMeta({ missionTitle: e.target.value })}
+                    onChange={(e) =>
+                      updateMissionVisionMeta({ missionTitle: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Vision Title">
                   <Input
                     value={content.missionVision.visionTitle}
-                    onChange={(e) => updateMissionVisionMeta({ visionTitle: e.target.value })}
+                    onChange={(e) =>
+                      updateMissionVisionMeta({ visionTitle: e.target.value })
+                    }
                   />
                 </Field>
               </div>
               <Field label="Mission Text">
                 <Textarea
                   value={content.missionVision.missionText}
-                  onChange={(e) => updateMissionVisionMeta({ missionText: e.target.value })}
+                  onChange={(e) =>
+                    updateMissionVisionMeta({ missionText: e.target.value })
+                  }
                   className="min-h-16 resize-none"
                 />
               </Field>
               <Field label="Vision Text">
                 <Textarea
                   value={content.missionVision.visionText}
-                  onChange={(e) => updateMissionVisionMeta({ visionText: e.target.value })}
+                  onChange={(e) =>
+                    updateMissionVisionMeta({ visionText: e.target.value })
+                  }
                   className="min-h-16 resize-none"
                 />
               </Field>
@@ -642,23 +1077,38 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <ArrayEditor
                 items={content.missionVision.values}
                 onChange={(values) =>
-                  setContent((c) => ({ ...c, missionVision: { ...c.missionVision, values } }))
+                  setContent((c) => ({
+                    ...c,
+                    missionVision: { ...c.missionVision, values },
+                  }))
                 }
-                newItem={() => ({ icon: "shield-check", title: "New Value", description: "Description" })}
+                newItem={() => ({
+                  icon: "shield-check",
+                  title: "New Value",
+                  description: "Description",
+                })}
                 addLabel="Add value"
                 minItems={0}
                 renderItem={(value, update) => (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <Field label="Icon">
-                      <IconPicker value={value.icon} onChange={(icon) => update({ icon })} />
+                      <IconPicker
+                        value={value.icon}
+                        onChange={(icon) => update({ icon })}
+                      />
                     </Field>
                     <Field label="Title">
-                      <Input value={value.title} onChange={(e) => update({ title: e.target.value })} />
+                      <Input
+                        value={value.title}
+                        onChange={(e) => update({ title: e.target.value })}
+                      />
                     </Field>
                     <Field label="Description">
                       <Input
                         value={value.description}
-                        onChange={(e) => update({ description: e.target.value })}
+                        onChange={(e) =>
+                          update({ description: e.target.value })
+                        }
                       />
                     </Field>
                   </div>
@@ -674,24 +1124,49 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Help Title">
-                  <Input value={content.contact.helpTitle} onChange={(e) => updateContact({ helpTitle: e.target.value })} />
+                  <Input
+                    value={content.contact.helpTitle}
+                    onChange={(e) =>
+                      updateContact({ helpTitle: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="Help Text">
-                  <Input value={content.contact.helpText} onChange={(e) => updateContact({ helpText: e.target.value })} />
+                  <Input
+                    value={content.contact.helpText}
+                    onChange={(e) =>
+                      updateContact({ helpText: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="Phone Label">
-                  <Input value={content.contact.phoneLabel} onChange={(e) => updateContact({ phoneLabel: e.target.value })} />
+                  <Input
+                    value={content.contact.phoneLabel}
+                    onChange={(e) =>
+                      updateContact({ phoneLabel: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="Phone Number">
-                  <Input value={content.contact.phone} onChange={(e) => updateContact({ phone: e.target.value })} />
+                  <Input
+                    value={content.contact.phone}
+                    onChange={(e) => updateContact({ phone: e.target.value })}
+                  />
                 </Field>
                 <Field label="Phone Note">
-                  <Input value={content.contact.phoneNote} onChange={(e) => updateContact({ phoneNote: e.target.value })} />
+                  <Input
+                    value={content.contact.phoneNote}
+                    onChange={(e) =>
+                      updateContact({ phoneNote: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="WhatsApp Button Label">
                   <Input
                     value={content.contact.whatsappLabel}
-                    onChange={(e) => updateContact({ whatsappLabel: e.target.value })}
+                    onChange={(e) =>
+                      updateContact({ whatsappLabel: e.target.value })
+                    }
                   />
                 </Field>
               </div>
@@ -700,27 +1175,40 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
 
           <TabsContent value="about-page" className="mt-6">
             <Card>
-              <p className="text-xs text-muted-foreground">Content for the /about page.</p>
+              <p className="text-xs text-muted-foreground">
+                Content for the /about page.
+              </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Heading">
-                  <Input value={content.aboutPage.heading} onChange={(e) => updateAboutPage({ heading: e.target.value })} />
+                  <Input
+                    value={content.aboutPage.heading}
+                    onChange={(e) =>
+                      updateAboutPage({ heading: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="Subheading">
                   <Input
                     value={content.aboutPage.subheading}
-                    onChange={(e) => updateAboutPage({ subheading: e.target.value })}
+                    onChange={(e) =>
+                      updateAboutPage({ subheading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Story Heading">
                   <Input
                     value={content.aboutPage.storyHeading}
-                    onChange={(e) => updateAboutPage({ storyHeading: e.target.value })}
+                    onChange={(e) =>
+                      updateAboutPage({ storyHeading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Mission Heading">
                   <Input
                     value={content.aboutPage.missionHeading}
-                    onChange={(e) => updateAboutPage({ missionHeading: e.target.value })}
+                    onChange={(e) =>
+                      updateAboutPage({ missionHeading: e.target.value })
+                    }
                   />
                 </Field>
               </div>
@@ -728,18 +1216,25 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <Field label="Mission Text">
                 <Textarea
                   value={content.aboutPage.missionText}
-                  onChange={(e) => updateAboutPage({ missionText: e.target.value })}
+                  onChange={(e) =>
+                    updateAboutPage({ missionText: e.target.value })
+                  }
                   className="min-h-16 resize-none"
                 />
               </Field>
 
               <SectionTitle>Story Paragraphs</SectionTitle>
               <ArrayEditor
-                items={content.aboutPage.storyParagraphs.map((text) => ({ text }))}
+                items={content.aboutPage.storyParagraphs.map((text) => ({
+                  text,
+                }))}
                 onChange={(items) =>
                   setContent((c) => ({
                     ...c,
-                    aboutPage: { ...c.aboutPage, storyParagraphs: items.map((i) => i.text) },
+                    aboutPage: {
+                      ...c.aboutPage,
+                      storyParagraphs: items.map((i) => i.text),
+                    },
                   }))
                 }
                 newItem={() => ({ text: "New paragraph" })}
@@ -760,24 +1255,44 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <ArrayEditor
                 items={content.aboutPage.stats}
                 onChange={(stats) =>
-                  setContent((c) => ({ ...c, aboutPage: { ...c.aboutPage, stats } }))
+                  setContent((c) => ({
+                    ...c,
+                    aboutPage: { ...c.aboutPage, stats },
+                  }))
                 }
-                newItem={() => ({ icon: "zap", value: "0", label: "New stat", sublabel: "" })}
+                newItem={() => ({
+                  icon: "zap",
+                  value: "0",
+                  label: "New stat",
+                  sublabel: "",
+                })}
                 addLabel="Add stat"
                 minItems={1}
                 renderItem={(stat, update) => (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
                     <Field label="Icon">
-                      <IconPicker value={stat.icon} onChange={(icon) => update({ icon })} />
+                      <IconPicker
+                        value={stat.icon}
+                        onChange={(icon) => update({ icon })}
+                      />
                     </Field>
                     <Field label="Value">
-                      <Input value={stat.value} onChange={(e) => update({ value: e.target.value })} />
+                      <Input
+                        value={stat.value}
+                        onChange={(e) => update({ value: e.target.value })}
+                      />
                     </Field>
                     <Field label="Label">
-                      <Input value={stat.label} onChange={(e) => update({ label: e.target.value })} />
+                      <Input
+                        value={stat.label}
+                        onChange={(e) => update({ label: e.target.value })}
+                      />
                     </Field>
                     <Field label="Sublabel">
-                      <Input value={stat.sublabel} onChange={(e) => update({ sublabel: e.target.value })} />
+                      <Input
+                        value={stat.sublabel}
+                        onChange={(e) => update({ sublabel: e.target.value })}
+                      />
                     </Field>
                   </div>
                 )}
@@ -787,9 +1302,17 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <ArrayEditor
                 items={content.aboutPage.team}
                 onChange={(team) =>
-                  setContent((c) => ({ ...c, aboutPage: { ...c.aboutPage, team } }))
+                  setContent((c) => ({
+                    ...c,
+                    aboutPage: { ...c.aboutPage, team },
+                  }))
                 }
-                newItem={() => ({ name: "New Person", role: "Role", bio: "Short bio", imagePublicId: null })}
+                newItem={() => ({
+                  name: "New Person",
+                  role: "Role",
+                  bio: "Short bio",
+                  imagePublicId: null,
+                })}
                 addLabel="Add team member"
                 minItems={0}
                 renderItem={(member, update) => (
@@ -801,13 +1324,22 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                     />
                     <div className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-2">
                       <Field label="Name">
-                        <Input value={member.name} onChange={(e) => update({ name: e.target.value })} />
+                        <Input
+                          value={member.name}
+                          onChange={(e) => update({ name: e.target.value })}
+                        />
                       </Field>
                       <Field label="Role">
-                        <Input value={member.role} onChange={(e) => update({ role: e.target.value })} />
+                        <Input
+                          value={member.role}
+                          onChange={(e) => update({ role: e.target.value })}
+                        />
                       </Field>
                       <Field label="Bio" className="sm:col-span-2">
-                        <Input value={member.bio} onChange={(e) => update({ bio: e.target.value })} />
+                        <Input
+                          value={member.bio}
+                          onChange={(e) => update({ bio: e.target.value })}
+                        />
                       </Field>
                     </div>
                   </div>
@@ -818,39 +1350,64 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
 
           <TabsContent value="contact-page" className="mt-6">
             <Card>
-              <p className="text-xs text-muted-foreground">Content for the /contact page.</p>
+              <p className="text-xs text-muted-foreground">
+                Content for the /contact page.
+              </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Heading">
                   <Input
                     value={content.contactPage.heading}
-                    onChange={(e) => updateContactPage({ heading: e.target.value })}
+                    onChange={(e) =>
+                      updateContactPage({ heading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Subheading">
                   <Input
                     value={content.contactPage.subheading}
-                    onChange={(e) => updateContactPage({ subheading: e.target.value })}
+                    onChange={(e) =>
+                      updateContactPage({ subheading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Email">
-                  <Input value={content.contactPage.email} onChange={(e) => updateContactPage({ email: e.target.value })} />
+                  <Input
+                    value={content.contactPage.email}
+                    onChange={(e) =>
+                      updateContactPage({ email: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="Phone">
-                  <Input value={content.contactPage.phone} onChange={(e) => updateContactPage({ phone: e.target.value })} />
+                  <Input
+                    value={content.contactPage.phone}
+                    onChange={(e) =>
+                      updateContactPage({ phone: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="Address">
                   <Input
                     value={content.contactPage.address}
-                    onChange={(e) => updateContactPage({ address: e.target.value })}
+                    onChange={(e) =>
+                      updateContactPage({ address: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Hours">
-                  <Input value={content.contactPage.hours} onChange={(e) => updateContactPage({ hours: e.target.value })} />
+                  <Input
+                    value={content.contactPage.hours}
+                    onChange={(e) =>
+                      updateContactPage({ hours: e.target.value })
+                    }
+                  />
                 </Field>
                 <Field label="Form Heading">
                   <Input
                     value={content.contactPage.formHeading}
-                    onChange={(e) => updateContactPage({ formHeading: e.target.value })}
+                    onChange={(e) =>
+                      updateContactPage({ formHeading: e.target.value })
+                    }
                   />
                 </Field>
               </div>
@@ -860,27 +1417,33 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
           <TabsContent value="services-page" className="mt-6">
             <Card>
               <p className="text-xs text-muted-foreground">
-                Content for the /services page. The service list itself is managed in the
-                Services tab.
+                Content for the /services page. The service list itself is
+                managed in the Services tab.
               </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Heading">
                   <Input
                     value={content.servicesPage.heading}
-                    onChange={(e) => updateServicesPage({ heading: e.target.value })}
+                    onChange={(e) =>
+                      updateServicesPage({ heading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Subheading">
                   <Input
                     value={content.servicesPage.subheading}
-                    onChange={(e) => updateServicesPage({ subheading: e.target.value })}
+                    onChange={(e) =>
+                      updateServicesPage({ subheading: e.target.value })
+                    }
                   />
                 </Field>
               </div>
               <Field label="Intro Text">
                 <Textarea
                   value={content.servicesPage.intro}
-                  onChange={(e) => updateServicesPage({ intro: e.target.value })}
+                  onChange={(e) =>
+                    updateServicesPage({ intro: e.target.value })
+                  }
                   className="min-h-16 resize-none"
                 />
               </Field>
@@ -890,20 +1453,75 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
           <TabsContent value="find-labour-page" className="mt-6">
             <Card>
               <p className="text-xs text-muted-foreground">
-                Content for the /find-labour page. The worker list itself is managed in the
-                Workers tab.
+                Content for the /find-labour page. The worker list itself is
+                managed in the Workers tab.
               </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Heading">
                   <Input
                     value={content.findLabourPage.heading}
-                    onChange={(e) => updateFindLabourPage({ heading: e.target.value })}
+                    onChange={(e) =>
+                      updateFindLabourPage({ heading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Subheading">
                   <Input
                     value={content.findLabourPage.subheading}
-                    onChange={(e) => updateFindLabourPage({ subheading: e.target.value })}
+                    onChange={(e) =>
+                      updateFindLabourPage({ subheading: e.target.value })
+                    }
+                  />
+                </Field>
+              </div>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="become-labour-page" className="mt-6">
+            <Card>
+              <p className="text-xs text-muted-foreground">
+                Content for the /become-labour page, where workers submit an
+                application.
+              </p>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Heading">
+                  <Input
+                    value={content.becomeLabourPage.heading}
+                    onChange={(e) =>
+                      updateBecomeLabourPage({ heading: e.target.value })
+                    }
+                  />
+                </Field>
+                <Field label="Subheading">
+                  <Input
+                    value={content.becomeLabourPage.subheading}
+                    onChange={(e) =>
+                      updateBecomeLabourPage({ subheading: e.target.value })
+                    }
+                  />
+                </Field>
+                <Field label="Form Heading">
+                  <Input
+                    value={content.becomeLabourPage.formHeading}
+                    onChange={(e) =>
+                      updateBecomeLabourPage({ formHeading: e.target.value })
+                    }
+                  />
+                </Field>
+                <Field label="Submit Button Label">
+                  <Input
+                    value={content.becomeLabourPage.submitLabel}
+                    onChange={(e) =>
+                      updateBecomeLabourPage({ submitLabel: e.target.value })
+                    }
+                  />
+                </Field>
+                <Field label="Success Message" className="sm:col-span-2">
+                  <Input
+                    value={content.becomeLabourPage.successMessage}
+                    onChange={(e) =>
+                      updateBecomeLabourPage({ successMessage: e.target.value })
+                    }
                   />
                 </Field>
               </div>
@@ -913,18 +1531,24 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
           <TabsContent value="blog" className="mt-6">
             <div className="flex flex-col gap-6">
               <Card>
-                <p className="text-xs text-muted-foreground">Content for the /blog page header.</p>
+                <p className="text-xs text-muted-foreground">
+                  Content for the /blog page header.
+                </p>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Field label="Heading">
                     <Input
                       value={content.blogPage.heading}
-                      onChange={(e) => updateBlogPage({ heading: e.target.value })}
+                      onChange={(e) =>
+                        updateBlogPage({ heading: e.target.value })
+                      }
                     />
                   </Field>
                   <Field label="Subheading">
                     <Input
                       value={content.blogPage.subheading}
-                      onChange={(e) => updateBlogPage({ subheading: e.target.value })}
+                      onChange={(e) =>
+                        updateBlogPage({ subheading: e.target.value })
+                      }
                     />
                   </Field>
                 </div>
@@ -935,6 +1559,10 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
 
           <TabsContent value="requests" className="mt-6">
             <RequestsPanel />
+          </TabsContent>
+
+          <TabsContent value="applications" className="mt-6">
+            <ApplicationsPanel />
           </TabsContent>
 
           <TabsContent value="messages" className="mt-6">
@@ -973,11 +1601,16 @@ function TagListEditor({
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap gap-2">
         {items.map((item, index) => (
-          <div key={index} className="flex items-center gap-1 rounded-md border border-border py-1 pr-1 pl-2.5">
+          <div
+            key={index}
+            className="flex items-center gap-1 rounded-md border border-border py-1 pr-1 pl-2.5"
+          >
             <input
               value={item}
               onChange={(e) =>
-                onChange(items.map((it, i) => (i === index ? e.target.value : it)))
+                onChange(
+                  items.map((it, i) => (i === index ? e.target.value : it)),
+                )
               }
               className="w-24 bg-transparent text-sm outline-none"
             />
@@ -1018,7 +1651,11 @@ function RequestsPanel() {
         return res.json();
       })
       .then(setRequests)
-      .catch((err) => setError(err instanceof Error ? err.message : "Failed to load requests"));
+      .catch((err) =>
+        setError(
+          err instanceof Error ? err.message : "Failed to load requests",
+        ),
+      );
   }, []);
 
   async function handleDelete(id: string) {
@@ -1049,32 +1686,44 @@ function RequestsPanel() {
 
       <div className="flex flex-col gap-3">
         {requests?.map((req) => (
-          <div key={req.id} className="flex items-start gap-3 rounded-lg border border-border p-4">
+          <div
+            key={req.id}
+            className="flex items-start gap-3 rounded-lg border border-border p-4"
+          >
             <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400">
               <ClipboardList className="size-4" />
             </span>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <p className="text-sm font-semibold text-blue-950 dark:text-white">{req.name}</p>
-                <span className="text-xs text-muted-foreground">{req.phone}</span>
+                <p className="text-sm font-semibold text-blue-950 dark:text-white">
+                  {req.name}
+                </p>
+                <span className="text-xs text-muted-foreground">
+                  {req.phone}
+                </span>
                 <span className="text-xs text-muted-foreground">
                   {new Date(req.createdAt).toLocaleString()}
                 </span>
               </div>
               <div className="mt-1 flex flex-wrap gap-x-3 text-xs text-muted-foreground">
                 <span>
-                  <strong className="text-foreground">Service:</strong> {req.service}
+                  <strong className="text-foreground">Service:</strong>{" "}
+                  {req.service}
                 </span>
                 <span>
-                  <strong className="text-foreground">Location:</strong> {req.location}
+                  <strong className="text-foreground">Location:</strong>{" "}
+                  {req.location}
                 </span>
                 {req.date && (
                   <span>
-                    <strong className="text-foreground">Date:</strong> {req.date}
+                    <strong className="text-foreground">Date:</strong>{" "}
+                    {req.date}
                   </span>
                 )}
               </div>
-              {req.details && <p className="mt-1 text-sm text-foreground">{req.details}</p>}
+              {req.details && (
+                <p className="mt-1 text-sm text-foreground">{req.details}</p>
+              )}
             </div>
             <Button
               size="icon-sm"
@@ -1082,6 +1731,111 @@ function RequestsPanel() {
               className="shrink-0 text-destructive"
               onClick={() => handleDelete(req.id)}
               disabled={deletingId === req.id}
+            >
+              <Trash2 className="size-4" />
+              <span className="sr-only">Delete</span>
+            </Button>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function ApplicationsPanel() {
+  const [applications, setApplications] = useState<
+    WorkerApplicationDTO[] | null
+  >(null);
+  const [error, setError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/worker-applications")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load applications");
+        return res.json();
+      })
+      .then(setApplications)
+      .catch((err) =>
+        setError(
+          err instanceof Error ? err.message : "Failed to load applications",
+        ),
+      );
+  }, []);
+
+  async function handleDelete(id: string) {
+    setDeletingId(id);
+    try {
+      await fetch(`/api/worker-applications/${id}`, { method: "DELETE" });
+      setApplications((prev) => prev?.filter((a) => a.id !== id) ?? null);
+    } finally {
+      setDeletingId(null);
+    }
+  }
+
+  return (
+    <Card>
+      <p className="text-xs text-muted-foreground">
+        Applications submitted through the &quot;Become a Labour&quot; form.
+      </p>
+
+      {error && <p className="text-sm text-destructive">{error}</p>}
+      {!error && applications === null && (
+        <p className="text-sm text-muted-foreground">Loading…</p>
+      )}
+      {applications?.length === 0 && (
+        <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
+          No applications yet.
+        </p>
+      )}
+
+      <div className="flex flex-col gap-3">
+        {applications?.map((app) => (
+          <div
+            key={app.id}
+            className="flex items-start gap-3 rounded-lg border border-border p-4"
+          >
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400">
+              <HardHat className="size-4" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-sm font-semibold text-blue-950 dark:text-white">
+                  {app.name}
+                </p>
+                <span className="text-xs text-muted-foreground">
+                  {app.phone}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {new Date(app.createdAt).toLocaleString()}
+                </span>
+              </div>
+              <div className="mt-1 flex flex-wrap gap-x-3 text-xs text-muted-foreground">
+                <span>
+                  <strong className="text-foreground">Skill:</strong>{" "}
+                  {app.service}
+                </span>
+                <span>
+                  <strong className="text-foreground">Location:</strong>{" "}
+                  {app.location}
+                </span>
+                {app.experience && (
+                  <span>
+                    <strong className="text-foreground">Experience:</strong>{" "}
+                    {app.experience}
+                  </span>
+                )}
+              </div>
+              {app.details && (
+                <p className="mt-1 text-sm text-foreground">{app.details}</p>
+              )}
+            </div>
+            <Button
+              size="icon-sm"
+              variant="ghost"
+              className="shrink-0 text-destructive"
+              onClick={() => handleDelete(app.id)}
+              disabled={deletingId === app.id}
             >
               <Trash2 className="size-4" />
               <span className="sr-only">Delete</span>
@@ -1105,7 +1859,11 @@ function MessagesPanel() {
         return res.json();
       })
       .then(setMessages)
-      .catch((err) => setError(err instanceof Error ? err.message : "Failed to load messages"));
+      .catch((err) =>
+        setError(
+          err instanceof Error ? err.message : "Failed to load messages",
+        ),
+      );
   }, []);
 
   async function handleDelete(id: string) {
@@ -1136,14 +1894,21 @@ function MessagesPanel() {
 
       <div className="flex flex-col gap-3">
         {messages?.map((msg) => (
-          <div key={msg.id} className="flex items-start gap-3 rounded-lg border border-border p-4">
+          <div
+            key={msg.id}
+            className="flex items-start gap-3 rounded-lg border border-border p-4"
+          >
             <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400">
               <Mail className="size-4" />
             </span>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <p className="text-sm font-semibold text-blue-950 dark:text-white">{msg.name}</p>
-                <span className="text-xs text-muted-foreground">{msg.contact}</span>
+                <p className="text-sm font-semibold text-blue-950 dark:text-white">
+                  {msg.name}
+                </p>
+                <span className="text-xs text-muted-foreground">
+                  {msg.contact}
+                </span>
                 <span className="text-xs text-muted-foreground">
                   {new Date(msg.createdAt).toLocaleString()}
                 </span>
