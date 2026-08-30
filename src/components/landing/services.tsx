@@ -24,8 +24,8 @@ export function Services({ content }: ServicesProps) {
           const isMoreServices = service.title === "More Services";
           const card = (
             <div className="group flex h-full flex-col items-center gap-3 rounded-xl border border-border bg-background p-5 text-center shadow-xs transition-all hover:-translate-y-0.5 hover:shadow-md">
-              <div className="flex size-12 items-center justify-center rounded-full bg-blue-100 text-blue-700 transition-colors group-hover:bg-blue-950 group-hover:text-white dark:bg-blue-900/30 dark:text-blue-400">
-                <DynamicIcon name={service.icon} className="size-5" />
+              <div className="flex size-16 items-center justify-center rounded-full bg-blue-100 text-blue-700 transition-colors group-hover:border-2 group-hover:border-blue-950  dark:bg-blue-900/30 dark:text-blue-400">
+                <DynamicIcon name={service.icon} className="size-10" />
               </div>
               <div>
                 <p className="text-sm font-semibold text-blue-950 dark:text-white">
