@@ -26,7 +26,7 @@ export function AboutContent({ content }: AboutContentProps) {
 
       <section
         className={cn(
-          " grid items-center gap-10 px-6 py-4",
+          " grid items-start gap-10 px-6 py-4",
           content.imagePublicId && "lg:grid-cols-2",
         )}
       >
