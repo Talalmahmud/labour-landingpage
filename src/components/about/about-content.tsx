@@ -4,6 +4,7 @@ import { DynamicIcon } from "@/components/ui/dynamic-icon";
 import { cloudinaryUrl } from "@/lib/cloudinary-url";
 import { getInitials } from "@/lib/format";
 import type { SiteContent } from "@/lib/content-types";
+import { cn } from "@/lib/utils";
 
 interface AboutContentProps {
   content: SiteContent["aboutPage"];
@@ -23,7 +24,27 @@ export function AboutContent({ content }: AboutContentProps) {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-5xl  gap-10 px-6 py-4 ">
+      <section
+        className={cn(
+          " grid items-center gap-10 px-6 py-4",
+          content.imagePublicId && "lg:grid-cols-2",
+        )}
+      >
+        {content.imagePublicId && (
+          <div className="relative order-first aspect-4/3 w-full overflow-hidden rounded-3xl shadow-lg lg:order-none">
+            <Image
+              src={cloudinaryUrl(
+                content.imagePublicId,
+                "f_auto,q_auto,w_1000,h_750,c_fill,g_auto",
+              )}
+              alt={content.heading}
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+        )}
+
         <div>
           <h2 className="font-heading text-xl font-bold text-blue-950 dark:text-white">
             {content.storyHeading}
@@ -45,7 +66,7 @@ export function AboutContent({ content }: AboutContentProps) {
         </div> */}
       </section>
 
-      <section className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-6 py-16 sm:grid-cols-4">
+      <section className=" grid  grid-cols-2 gap-4 px-6 py-16 sm:grid-cols-4">
         {content.stats.map((stat) => {
           return (
             <div
@@ -65,7 +86,7 @@ export function AboutContent({ content }: AboutContentProps) {
       </section>
 
       {content.team.length > 0 && (
-        <section className="mx-auto max-w-5xl px-6 pb-20">
+        <section className=" px-6 pb-20">
           <h2 className="text-center font-heading text-xl font-bold text-blue-950 dark:text-white">
             Meet the Team
           </h2>

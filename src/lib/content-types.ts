@@ -154,6 +154,7 @@ export interface SiteContent {
   aboutPage: {
     heading: string;
     subheading: string;
+    imagePublicId: string | null;
     storyHeading: string;
     storyParagraphs: string[];
     missionHeading: string;
@@ -194,5 +195,9 @@ export interface SiteContent {
     heading: string;
     subheading: string;
     videos: HowItWorksVideo[];
+  };
+  labourRequestPage: {
+    heading: string;
+    subheading: string;
   };
 }

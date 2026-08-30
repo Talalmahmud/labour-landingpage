@@ -24,7 +24,7 @@ const links = [
   { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "How It Works", href: "/how-it-works" },
-  { label: "Find Labour", href: "/find-labour" },
+  { label: "Hire", href: "/labour-request" },
   { label: "Blog", href: "/blog" },
   { label: "Contact Us", href: "/contact" },
 ];
@@ -61,7 +61,9 @@ export function Navbar({ content }: NavbarProps) {
             <p className="truncate font-heading text-lg font-bold text-blue-950 dark:text-white">
               {siteName}
             </p>
-            <p className="truncate text-[11px] text-muted-foreground">{tagline}</p>
+            <p className="truncate text-[11px] text-muted-foreground">
+              {tagline}
+            </p>
           </div>
         </Link>
 

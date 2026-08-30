@@ -237,6 +237,7 @@ export const defaultContent: SiteContent = {
   aboutPage: {
     heading: "About Shromik",
     subheading: "Connecting skilled labour with the people who need it, since day one.",
+    imagePublicId: null,
     storyHeading: "Our Story",
     storyParagraphs: [
       "Shromik started with a simple idea: finding reliable, skilled labour shouldn't be a gamble. Too many people were stuck asking neighbours for recommendations or hiring strangers off the street with no way to check their track record.",
@@ -317,5 +318,10 @@ export const defaultContent: SiteContent = {
         youtubeUrl: "https://youtu.be/LzxAetI7Mx4",
       },
     ],
+  },
+  labourRequestPage: {
+    heading: "Request Skilled Labour",
+    subheading:
+      "Tell us what you need and we'll match you with a verified worker, fast.",
   },
 };

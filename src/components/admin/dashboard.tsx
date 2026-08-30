@@ -147,6 +147,13 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
       ...c,
       howItWorksPage: { ...c.howItWorksPage, ...patch },
     }));
+  const updateLabourRequestPage = (
+    patch: Partial<SiteContent["labourRequestPage"]>,
+  ) =>
+    setContent((c) => ({
+      ...c,
+      labourRequestPage: { ...c.labourRequestPage, ...patch },
+    }));
 
   async function handleSave() {
     setSaveState("saving");
@@ -318,6 +325,12 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               value="how-it-works-page"
             >
               How It Works Page
+            </TabsTrigger>
+            <TabsTrigger
+              className=" hover:cursor-pointer"
+              value="labour-request-page"
+            >
+              Labour Request Page
             </TabsTrigger>
             <TabsTrigger className=" hover:cursor-pointer" value="blog">
               Blog
@@ -1332,6 +1345,15 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <p className="text-xs text-muted-foreground">
                 Content for the /about page.
               </p>
+              <Field label="About Image">
+                <ImageUploadField
+                  value={content.aboutPage.imagePublicId}
+                  onChange={(imagePublicId) => updateAboutPage({ imagePublicId })}
+                  onUploadingChange={trackUploading}
+                  hint="Shown beside the story text. Hidden if no image is set."
+                  previewTransform="f_auto,q_auto,w_320,h_240,c_fill,g_auto"
+                />
+              </Field>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Heading">
                   <Input
@@ -1743,6 +1765,29 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                   </div>
                 )}
               />
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="labour-request-page" className="mt-6">
+            <Card>
+              <p className="text-xs text-muted-foreground">
+                Content for the /labour-request page. The form fields, steps, and submit label
+                are managed in the Steps tab.
+              </p>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Heading">
+                  <Input
+                    value={content.labourRequestPage.heading}
+                    onChange={(e) => updateLabourRequestPage({ heading: e.target.value })}
+                  />
+                </Field>
+                <Field label="Subheading">
+                  <Input
+                    value={content.labourRequestPage.subheading}
+                    onChange={(e) => updateLabourRequestPage({ subheading: e.target.value })}
+                  />
+                </Field>
+              </div>
             </Card>
           </TabsContent>
 

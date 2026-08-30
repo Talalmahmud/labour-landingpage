@@ -37,10 +37,7 @@ export function Hero({ content, workerNames }: HeroProps) {
   const badgeInitials =
     workerNames.length > 0 ? workerNames.map(getInitials) : ["SH"];
   const hasVideo = getYouTubeEmbedUrl(content.howItWorksVideoUrl) !== null;
-  const gallerySlots = Array.from(
-    { length: 5 },
-    (_, i) => content.galleryImagePublicIds[i] ?? null,
-  );
+  const gallerySlots = content.galleryImagePublicIds;
 
   function handleFindLabour() {
     const query = location.trim();
@@ -182,7 +179,7 @@ export function Hero({ content, workerNames }: HeroProps) {
               )}
             </div>
 
-            <div className="relative z-10 -mt-8 flex justify-center gap-3 px-4 sm:justify-start sm:px-8">
+            <div className="relative z-10 -mt-8 flex flex-wrap justify-center gap-3 px-4 sm:justify-start sm:px-8">
               {gallerySlots.map((publicId, i) => (
                 <div
                   key={i}

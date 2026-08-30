@@ -21,12 +21,12 @@ export function MissionVisionContent({ content }: MissionVisionContentProps) {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-5xl grid-cols-1 gap-6 px-6 py-4 sm:grid-cols-2">
+      <section className=" grid  grid-cols-1 gap-6 px-6 py-4 sm:grid-cols-2">
         <div className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-8">
           <span className="flex size-11 items-center justify-center rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
             <Target className="size-5" />
           </span>
-       <h2 className="font-heading text-xl font-bold text-blue-950 dark:text-white">
+          <h2 className="font-heading text-xl font-bold text-blue-950 dark:text-white">
             {content.missionTitle}
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
@@ -48,7 +48,7 @@ export function MissionVisionContent({ content }: MissionVisionContentProps) {
       </section>
 
       {content.values.length > 0 && (
-        <section className="mx-auto max-w-5xl px-6 py-16">
+        <section className="px-6 py-16">
           <h2 className="text-center font-heading text-xl font-bold text-blue-950 dark:text-white">
             Our Core Values
           </h2>
