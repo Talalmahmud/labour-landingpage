@@ -47,8 +47,8 @@ export function ServicesContent({ page, services }: ServicesContentProps) {
                 key={service.title}
                 className="group flex flex-col gap-4 rounded-2xl border border-border bg-background p-6 shadow-xs transition-all hover:-translate-y-1 hover:border-blue-600/20 hover:shadow-lg"
               >
-                <div className="flex size-13 items-center justify-center rounded-2xl bg-blue-100 text-blue-700 transition-colors duration-300 group-hover:bg-blue-950 group-hover:text-white dark:bg-blue-900/30 dark:text-blue-400">
-                  <DynamicIcon name={service.icon} className="size-6" />
+                <div className="flex size-18 items-center justify-center rounded-full bg-blue-100 text-blue-700 transition-colors group-hover:border-2 group-hover:border-blue-950  dark:bg-blue-900/30 dark:text-blue-400">
+                  <DynamicIcon name={service.icon} className="size-12" />
                 </div>
                 <div>
                   <h3 className="text-base font-semibold text-blue-950 dark:text-white">
