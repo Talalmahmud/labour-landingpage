@@ -6,6 +6,14 @@ export const defaultContent: SiteContent = {
     siteName: "Shromik",
     tagline: "Service for People",
   },
+  seo: {
+    metaTitle: "Shromik — Find Trusted Labour for Any Work, Anytime",
+    metaDescription:
+      "Connect with skilled and reliable labour for all kinds of work at your convenience.",
+    keywords: "labour, workers, hire labour, skilled workers, manpower",
+    faviconPublicId: null,
+    ogImagePublicId: null,
+  },
   hero: {
     imagePublicId: null,
     titleLine1: "Find Trusted",
@@ -145,6 +153,36 @@ export const defaultContent: SiteContent = {
       description: "We ensure your complete satisfaction",
     },
   ],
+  reviews: {
+    heading: "What Hirers Are Saying",
+    subheading: "Real feedback from people who've hired skilled labour through Shromik.",
+    items: [
+      {
+        name: "Rahim Uddin",
+        role: "Homeowner, Dhaka",
+        rating: 5,
+        review:
+          "Found a great electrician within an hour of posting my request. Professional, on time, and fairly priced. Highly recommend Shromik.",
+        avatarPublicId: null,
+      },
+      {
+        name: "Nasrin Akter",
+        role: "Business Owner, Chattogram",
+        rating: 5,
+        review:
+          "We needed a whole team of painters for our office renovation. Shromik matched us fast and every worker showed up verified and ready to work.",
+        avatarPublicId: null,
+      },
+      {
+        name: "Kamal Hossain",
+        role: "Property Manager, Sylhet",
+        rating: 4,
+        review:
+          "Easy to use platform and the workers are genuinely skilled. Communication could be a bit faster, but overall a great experience.",
+        avatarPublicId: null,
+      },
+    ],
+  },
   choosePath: {
     heading: "Choose Your Path",
     subheading: "Whether you need skilled help or you are skilled help, we've got you covered.",
@@ -268,5 +306,16 @@ export const defaultContent: SiteContent = {
     formHeading: "Apply to join",
     submitLabel: "Submit Application",
     successMessage: "Application received — our team will contact you soon.",
+  },
+  howItWorksPage: {
+    heading: "How It Works",
+    subheading: "Watch how easy it is to find, hire, and work with trusted labour on Shromik.",
+    videos: [
+      {
+        title: "How Shromik Works",
+        description: "A quick overview of requesting and hiring skilled labour on Shromik.",
+        youtubeUrl: "https://youtu.be/LzxAetI7Mx4",
+      },
+    ],
   },
 };

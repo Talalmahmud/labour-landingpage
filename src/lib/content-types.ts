@@ -58,11 +58,32 @@ export interface ChoosePathOption {
   buttonLabel: string;
 }
 
+export interface HowItWorksVideo {
+  title: string;
+  description: string;
+  youtubeUrl: string;
+}
+
+export interface HirerReview {
+  name: string;
+  role: string;
+  rating: number;
+  review: string;
+  avatarPublicId: string | null;
+}
+
 export interface SiteContent {
   siteSettings: {
     logoPublicId: string | null;
     siteName: string;
     tagline: string;
+  };
+  seo: {
+    metaTitle: string;
+    metaDescription: string;
+    keywords: string;
+    faviconPublicId: string | null;
+    ogImagePublicId: string | null;
   };
   hero: {
     imagePublicId: string | null;
@@ -102,6 +123,11 @@ export interface SiteContent {
     mapPins: MapPin[];
   };
   trustPoints: TrustPoint[];
+  reviews: {
+    heading: string;
+    subheading: string;
+    items: HirerReview[];
+  };
   choosePath: {
     heading: string;
     subheading: string;
@@ -163,5 +189,10 @@ export interface SiteContent {
     formHeading: string;
     submitLabel: string;
     successMessage: string;
+  };
+  howItWorksPage: {
+    heading: string;
+    subheading: string;
+    videos: HowItWorksVideo[];
   };
 }

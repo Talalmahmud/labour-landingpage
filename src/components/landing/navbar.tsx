@@ -23,7 +23,7 @@ const links = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
-  { label: "How It Works", href: "/#how-it-works" },
+  { label: "How It Works", href: "/how-it-works" },
   { label: "Find Labour", href: "/find-labour" },
   { label: "Blog", href: "/blog" },
   { label: "Contact Us", href: "/contact" },

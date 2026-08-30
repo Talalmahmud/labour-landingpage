@@ -5,6 +5,7 @@ import { Hero } from "@/components/landing/hero";
 import { MissionVisionTeaser } from "@/components/landing/mission-vision-teaser";
 import { Navbar } from "@/components/landing/navbar";
 import { RequestSection } from "@/components/landing/request-section";
+import { Reviews } from "@/components/landing/reviews";
 import { Services } from "@/components/landing/services";
 import { TrustStrip } from "@/components/landing/trust-strip";
 import { getContent } from "@/lib/content";
@@ -20,11 +21,16 @@ export default async function Home() {
       <Navbar content={content.siteSettings} />
       <main className="flex-1">
         <Hero content={content.hero} workerNames={workerNames} />
-        <ChoosePath content={content.choosePath} />
         <Services content={content.services} />
-        <RequestSection content={content.requestSection} services={content.services.items} />
-        <FindLabour content={content.findLabour} />
-        <MissionVisionTeaser content={content.missionVision} />
+
+        <ChoosePath content={content.choosePath} />
+        <RequestSection
+          content={content.requestSection}
+          services={content.services.items}
+        />
+        {/* <FindLabour content={content.findLabour} /> */}
+        {/* <MissionVisionTeaser content={content.missionVision} /> */}
+        <Reviews content={content.reviews} />
         <TrustStrip content={content.trustPoints} />
       </main>
       <ContactBar content={content.contact} />

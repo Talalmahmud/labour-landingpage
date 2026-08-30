@@ -82,9 +82,9 @@ export function AboutContent({ content }: AboutContentProps) {
                       "f_auto,q_auto,w_200,h_200,c_fill,g_face",
                     )}
                     alt={member.name}
-                    width={96}
-                    height={96}
-                    className="size-24 rounded-full object-cover"
+                    width={100}
+                    height={100}
+                    className="size-32  object-cover"
                   />
                 ) : (
                   <span className="flex size-24 items-center justify-center rounded-full bg-blue-100 text-lg font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">

@@ -212,7 +212,7 @@ export function Hero({ content, workerNames }: HeroProps) {
 
         {/* search + stats panel */}
         <div className="animate-in fade-in slide-in-from-bottom-4 mt-16 rounded-3xl bg-background p-6 shadow-xl ring-1 ring-foreground/10 duration-700 delay-300 sm:p-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6">
+          {/* <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6">
             <p className="flex shrink-0 items-center gap-1.5 text-sm font-semibold text-blue-950 dark:text-white">
               <MapPin className="size-4 text-blue-600" />
               {content.searchHeading}
@@ -262,9 +262,9 @@ export function Hero({ content, workerNames }: HeroProps) {
                 View All
               </Link>
             </div>
-          </div>
+          </div> */}
 
-          <div className="mt-8 grid grid-cols-2 gap-6 border-t border-border pt-8 sm:grid-cols-4">
+          <div className=" grid grid-cols-2 gap-6  sm:grid-cols-4">
             {content.stats.map((stat) => (
               <Stat
                 key={stat.label}

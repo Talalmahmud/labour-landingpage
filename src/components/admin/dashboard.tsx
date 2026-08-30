@@ -56,6 +56,8 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
   const trackUploading = (uploading: boolean) =>
     setUploadingCount((c) => Math.max(0, c + (uploading ? 1 : -1)));
 
+  const updateSeo = (patch: Partial<SiteContent["seo"]>) =>
+    setContent((c) => ({ ...c, seo: { ...c.seo, ...patch } }));
   const updateSiteSettings = (patch: Partial<SiteContent["siteSettings"]>) =>
     setContent((c) => ({
       ...c,
@@ -76,6 +78,8 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
   const updateFindLabourMeta = (
     patch: Partial<Omit<SiteContent["findLabour"], "workers" | "mapPins">>,
   ) => setContent((c) => ({ ...c, findLabour: { ...c.findLabour, ...patch } }));
+  const updateReviewsMeta = (patch: Partial<Omit<SiteContent["reviews"], "items">>) =>
+    setContent((c) => ({ ...c, reviews: { ...c.reviews, ...patch } }));
   const updateChoosePathMeta = (
     patch: Partial<
       Omit<SiteContent["choosePath"], "hireLabour" | "becomeLabour">
@@ -135,6 +139,13 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
     setContent((c) => ({
       ...c,
       becomeLabourPage: { ...c.becomeLabourPage, ...patch },
+    }));
+  const updateHowItWorksPage = (
+    patch: Partial<Omit<SiteContent["howItWorksPage"], "videos">>,
+  ) =>
+    setContent((c) => ({
+      ...c,
+      howItWorksPage: { ...c.howItWorksPage, ...patch },
     }));
 
   async function handleSave() {
@@ -242,6 +253,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             >
               Site Settings
             </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="seo">
+              SEO
+            </TabsTrigger>
             <TabsTrigger className=" hover:cursor-pointer" value="icon-library">
               Icon Library
             </TabsTrigger>
@@ -259,6 +273,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </TabsTrigger>
             <TabsTrigger className=" hover:cursor-pointer" value="trust">
               Trust Points
+            </TabsTrigger>
+            <TabsTrigger className=" hover:cursor-pointer" value="reviews">
+              Reviews
             </TabsTrigger>
             <TabsTrigger className=" hover:cursor-pointer" value="choose-path">
               Choose Path
@@ -295,6 +312,12 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               value="become-labour-page"
             >
               Become Labour Page
+            </TabsTrigger>
+            <TabsTrigger
+              className=" hover:cursor-pointer"
+              value="how-it-works-page"
+            >
+              How It Works Page
             </TabsTrigger>
             <TabsTrigger className=" hover:cursor-pointer" value="blog">
               Blog
@@ -341,6 +364,57 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                     onChange={(e) =>
                       updateSiteSettings({ tagline: e.target.value })
                     }
+                  />
+                </Field>
+              </div>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="seo" className="mt-6">
+            <Card>
+              <p className="text-xs text-muted-foreground">
+                Controls the browser tab title, search engine listing, favicon, and the preview
+                card shown when your site is shared on social media or messaging apps.
+              </p>
+
+              <Field label="Meta Title">
+                <Input
+                  value={content.seo.metaTitle}
+                  onChange={(e) => updateSeo({ metaTitle: e.target.value })}
+                />
+              </Field>
+              <Field label="Meta Description">
+                <Textarea
+                  value={content.seo.metaDescription}
+                  onChange={(e) => updateSeo({ metaDescription: e.target.value })}
+                  className="min-h-16 resize-none"
+                />
+              </Field>
+              <Field label="Keywords">
+                <Input
+                  value={content.seo.keywords}
+                  onChange={(e) => updateSeo({ keywords: e.target.value })}
+                  placeholder="Comma-separated, e.g. labour, workers, hire labour"
+                />
+              </Field>
+
+              <div className="grid grid-cols-1 gap-6 border-t border-border pt-5 sm:grid-cols-2">
+                <Field label="Favicon">
+                  <ImageUploadField
+                    value={content.seo.faviconPublicId}
+                    onChange={(faviconPublicId) => updateSeo({ faviconPublicId })}
+                    onUploadingChange={trackUploading}
+                    hint="Falls back to the default site icon. Square image recommended."
+                    previewTransform="f_auto,q_auto,w_128,h_128,c_fit"
+                  />
+                </Field>
+                <Field label="Social Share Image (OG Image)">
+                  <ImageUploadField
+                    value={content.seo.ogImagePublicId}
+                    onChange={(ogImagePublicId) => updateSeo({ ogImagePublicId })}
+                    onUploadingChange={trackUploading}
+                    hint="Shown when your site is shared. Recommended size 1200×630."
+                    previewTransform="f_auto,q_auto,w_320,h_168,c_fill"
                   />
                 </Field>
               </div>
@@ -913,6 +987,86 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                         }
                       />
                     </Field>
+                  </div>
+                )}
+              />
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="reviews" className="mt-6">
+            <Card>
+              <p className="text-xs text-muted-foreground">
+                Reviews from hirers, shown as a sliding carousel on the homepage.
+              </p>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Heading">
+                  <Input
+                    value={content.reviews.heading}
+                    onChange={(e) => updateReviewsMeta({ heading: e.target.value })}
+                  />
+                </Field>
+                <Field label="Subheading">
+                  <Input
+                    value={content.reviews.subheading}
+                    onChange={(e) => updateReviewsMeta({ subheading: e.target.value })}
+                  />
+                </Field>
+              </div>
+
+              <SectionTitle>Reviews</SectionTitle>
+              <ArrayEditor
+                items={content.reviews.items}
+                onChange={(items) =>
+                  setContent((c) => ({ ...c, reviews: { ...c.reviews, items } }))
+                }
+                newItem={() => ({
+                  name: "New Reviewer",
+                  role: "Homeowner",
+                  rating: 5,
+                  review: "Great experience hiring through Shromik.",
+                  avatarPublicId: null,
+                })}
+                addLabel="Add review"
+                minItems={0}
+                renderItem={(review, update) => (
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <ImageUploadField
+                      value={review.avatarPublicId}
+                      onChange={(avatarPublicId) => update({ avatarPublicId })}
+                      onUploadingChange={trackUploading}
+                      hint="Falls back to initials when no photo is set."
+                      previewTransform="f_auto,q_auto,w_160,h_160,c_fill,g_face"
+                    />
+                    <div className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-2">
+                      <Field label="Name">
+                        <Input
+                          value={review.name}
+                          onChange={(e) => update({ name: e.target.value })}
+                        />
+                      </Field>
+                      <Field label="Role / Location">
+                        <Input
+                          value={review.role}
+                          onChange={(e) => update({ role: e.target.value })}
+                        />
+                      </Field>
+                      <Field label="Rating (1-5)">
+                        <Input
+                          type="number"
+                          min="1"
+                          max="5"
+                          value={review.rating}
+                          onChange={(e) => update({ rating: Number(e.target.value) })}
+                        />
+                      </Field>
+                      <Field label="Review" className="sm:col-span-2">
+                        <Textarea
+                          value={review.review}
+                          onChange={(e) => update({ review: e.target.value })}
+                          className="min-h-16 resize-none"
+                        />
+                      </Field>
+                    </div>
                   </div>
                 )}
               />
@@ -1525,6 +1679,70 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                   />
                 </Field>
               </div>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="how-it-works-page" className="mt-6">
+            <Card>
+              <p className="text-xs text-muted-foreground">
+                Content for the /how-it-works page. The navbar &quot;How It
+                Works&quot; link points here.
+              </p>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Heading">
+                  <Input
+                    value={content.howItWorksPage.heading}
+                    onChange={(e) =>
+                      updateHowItWorksPage({ heading: e.target.value })
+                    }
+                  />
+                </Field>
+                <Field label="Subheading">
+                  <Input
+                    value={content.howItWorksPage.subheading}
+                    onChange={(e) =>
+                      updateHowItWorksPage({ subheading: e.target.value })
+                    }
+                  />
+                </Field>
+              </div>
+
+              <SectionTitle>Videos</SectionTitle>
+              <ArrayEditor
+                items={content.howItWorksPage.videos}
+                onChange={(videos) =>
+                  setContent((c) => ({
+                    ...c,
+                    howItWorksPage: { ...c.howItWorksPage, videos },
+                  }))
+                }
+                newItem={() => ({ title: "New Video", description: "", youtubeUrl: "" })}
+                addLabel="Add video"
+                minItems={0}
+                renderItem={(video, update) => (
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <Field label="Title">
+                      <Input
+                        value={video.title}
+                        onChange={(e) => update({ title: e.target.value })}
+                      />
+                    </Field>
+                    <Field label="YouTube URL">
+                      <Input
+                        value={video.youtubeUrl}
+                        onChange={(e) => update({ youtubeUrl: e.target.value })}
+                        placeholder="https://www.youtube.com/watch?v=..."
+                      />
+                    </Field>
+                    <Field label="Description" className="sm:col-span-2">
+                      <Input
+                        value={video.description}
+                        onChange={(e) => update({ description: e.target.value })}
+                      />
+                    </Field>
+                  </div>
+                )}
+              />
             </Card>
           </TabsContent>
 
