@@ -78,8 +78,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
   const updateFindLabourMeta = (
     patch: Partial<Omit<SiteContent["findLabour"], "workers" | "mapPins">>,
   ) => setContent((c) => ({ ...c, findLabour: { ...c.findLabour, ...patch } }));
-  const updateReviewsMeta = (patch: Partial<Omit<SiteContent["reviews"], "items">>) =>
-    setContent((c) => ({ ...c, reviews: { ...c.reviews, ...patch } }));
+  const updateReviewsMeta = (
+    patch: Partial<Omit<SiteContent["reviews"], "items">>,
+  ) => setContent((c) => ({ ...c, reviews: { ...c.reviews, ...patch } }));
   const updateChoosePathMeta = (
     patch: Partial<
       Omit<SiteContent["choosePath"], "hireLabour" | "becomeLabour">
@@ -253,7 +254,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
           orientation="vertical"
           className="flex-col items-start gap-6 lg:flex-row lg:gap-8"
         >
-          <TabsList className="w-full items-stretch lg:w-56 lg:shrink-0 lg:self-start lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
+          <TabsList className="w-full items-stretch lg:w-56 lg:shrink-0 lg:self-start lg:sticky lg:top-24 lg:max-h-screen lg:overflow-y-auto">
             <TabsTrigger
               className=" hover:cursor-pointer"
               value="site-settings"
@@ -346,7 +347,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="site-settings" className="mt-6">
+          <TabsContent value="site-settings">
             <Card>
               <p className="text-xs text-muted-foreground">
                 The logo and site name shown in the navbar across every page.
@@ -383,11 +384,12 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="seo" className="mt-6">
+          <TabsContent value="seo">
             <Card>
               <p className="text-xs text-muted-foreground">
-                Controls the browser tab title, search engine listing, favicon, and the preview
-                card shown when your site is shared on social media or messaging apps.
+                Controls the browser tab title, search engine listing, favicon,
+                and the preview card shown when your site is shared on social
+                media or messaging apps.
               </p>
 
               <Field label="Meta Title">
@@ -399,7 +401,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <Field label="Meta Description">
                 <Textarea
                   value={content.seo.metaDescription}
-                  onChange={(e) => updateSeo({ metaDescription: e.target.value })}
+                  onChange={(e) =>
+                    updateSeo({ metaDescription: e.target.value })
+                  }
                   className="min-h-16 resize-none"
                 />
               </Field>
@@ -415,7 +419,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                 <Field label="Favicon">
                   <ImageUploadField
                     value={content.seo.faviconPublicId}
-                    onChange={(faviconPublicId) => updateSeo({ faviconPublicId })}
+                    onChange={(faviconPublicId) =>
+                      updateSeo({ faviconPublicId })
+                    }
                     onUploadingChange={trackUploading}
                     hint="Falls back to the default site icon. Square image recommended."
                     previewTransform="f_auto,q_auto,w_128,h_128,c_fit"
@@ -424,7 +430,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                 <Field label="Social Share Image (OG Image)">
                   <ImageUploadField
                     value={content.seo.ogImagePublicId}
-                    onChange={(ogImagePublicId) => updateSeo({ ogImagePublicId })}
+                    onChange={(ogImagePublicId) =>
+                      updateSeo({ ogImagePublicId })
+                    }
                     onUploadingChange={trackUploading}
                     hint="Shown when your site is shared. Recommended size 1200×630."
                     previewTransform="f_auto,q_auto,w_320,h_168,c_fill"
@@ -434,11 +442,11 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="icon-library" className="mt-6">
+          <TabsContent value="icon-library">
             <IconLibraryPanel />
           </TabsContent>
 
-          <TabsContent value="hero" className="mt-6">
+          <TabsContent value="hero">
             <Card>
               <Field label="Hero Image">
                 <ImageUploadField
@@ -685,7 +693,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="services" className="mt-6">
+          <TabsContent value="services">
             <Card>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Section Heading">
@@ -750,7 +758,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="steps" className="mt-6">
+          <TabsContent value="steps">
             <Card>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Heading Line 1">
@@ -824,7 +832,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="workers" className="mt-6">
+          <TabsContent value="workers">
             <Card>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Section Heading">
@@ -963,7 +971,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="trust" className="mt-6">
+          <TabsContent value="trust">
             <Card>
               <SectionTitle>Trust Points</SectionTitle>
               <ArrayEditor
@@ -1006,22 +1014,27 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="reviews" className="mt-6">
+          <TabsContent value="reviews">
             <Card>
               <p className="text-xs text-muted-foreground">
-                Reviews from hirers, shown as a sliding carousel on the homepage.
+                Reviews from hirers, shown as a sliding carousel on the
+                homepage.
               </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Heading">
                   <Input
                     value={content.reviews.heading}
-                    onChange={(e) => updateReviewsMeta({ heading: e.target.value })}
+                    onChange={(e) =>
+                      updateReviewsMeta({ heading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Subheading">
                   <Input
                     value={content.reviews.subheading}
-                    onChange={(e) => updateReviewsMeta({ subheading: e.target.value })}
+                    onChange={(e) =>
+                      updateReviewsMeta({ subheading: e.target.value })
+                    }
                   />
                 </Field>
               </div>
@@ -1030,7 +1043,10 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <ArrayEditor
                 items={content.reviews.items}
                 onChange={(items) =>
-                  setContent((c) => ({ ...c, reviews: { ...c.reviews, items } }))
+                  setContent((c) => ({
+                    ...c,
+                    reviews: { ...c.reviews, items },
+                  }))
                 }
                 newItem={() => ({
                   name: "New Reviewer",
@@ -1069,7 +1085,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                           min="1"
                           max="5"
                           value={review.rating}
-                          onChange={(e) => update({ rating: Number(e.target.value) })}
+                          onChange={(e) =>
+                            update({ rating: Number(e.target.value) })
+                          }
                         />
                       </Field>
                       <Field label="Review" className="sm:col-span-2">
@@ -1086,7 +1104,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="choose-path" className="mt-6">
+          <TabsContent value="choose-path">
             <Card>
               <p className="text-xs text-muted-foreground">
                 The &quot;Hire Labour&quot; / &quot;Become a Labour&quot;
@@ -1181,7 +1199,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="mission-vision" className="mt-6">
+          <TabsContent value="mission-vision">
             <Card>
               <p className="text-xs text-muted-foreground">
                 Shown as a section on the homepage, with a full write-up on the
@@ -1284,7 +1302,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="contact-bar" className="mt-6">
+          <TabsContent value="contact-bar">
             <Card>
               <p className="text-xs text-muted-foreground">
                 This is the dark blue bar at the bottom of every page.
@@ -1340,7 +1358,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="about-page" className="mt-6">
+          <TabsContent value="about-page">
             <Card>
               <p className="text-xs text-muted-foreground">
                 Content for the /about page.
@@ -1348,7 +1366,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
               <Field label="About Image">
                 <ImageUploadField
                   value={content.aboutPage.imagePublicId}
-                  onChange={(imagePublicId) => updateAboutPage({ imagePublicId })}
+                  onChange={(imagePublicId) =>
+                    updateAboutPage({ imagePublicId })
+                  }
                   onUploadingChange={trackUploading}
                   hint="Shown beside the story text. Hidden if no image is set."
                   previewTransform="f_auto,q_auto,w_320,h_240,c_fill,g_auto"
@@ -1524,7 +1544,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="contact-page" className="mt-6">
+          <TabsContent value="contact-page">
             <Card>
               <p className="text-xs text-muted-foreground">
                 Content for the /contact page.
@@ -1590,7 +1610,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="services-page" className="mt-6">
+          <TabsContent value="services-page">
             <Card>
               <p className="text-xs text-muted-foreground">
                 Content for the /services page. The service list itself is
@@ -1626,7 +1646,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="find-labour-page" className="mt-6">
+          <TabsContent value="find-labour-page">
             <Card>
               <p className="text-xs text-muted-foreground">
                 Content for the /find-labour page. The worker list itself is
@@ -1653,7 +1673,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="become-labour-page" className="mt-6">
+          <TabsContent value="become-labour-page">
             <Card>
               <p className="text-xs text-muted-foreground">
                 Content for the /become-labour page, where workers submit an
@@ -1704,7 +1724,7 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="how-it-works-page" className="mt-6">
+          <TabsContent value="how-it-works-page">
             <Card>
               <p className="text-xs text-muted-foreground">
                 Content for the /how-it-works page. The navbar &quot;How It
@@ -1738,7 +1758,11 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                     howItWorksPage: { ...c.howItWorksPage, videos },
                   }))
                 }
-                newItem={() => ({ title: "New Video", description: "", youtubeUrl: "" })}
+                newItem={() => ({
+                  title: "New Video",
+                  description: "",
+                  youtubeUrl: "",
+                })}
                 addLabel="Add video"
                 minItems={0}
                 renderItem={(video, update) => (
@@ -1759,7 +1783,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                     <Field label="Description" className="sm:col-span-2">
                       <Input
                         value={video.description}
-                        onChange={(e) => update({ description: e.target.value })}
+                        onChange={(e) =>
+                          update({ description: e.target.value })
+                        }
                       />
                     </Field>
                   </div>
@@ -1768,30 +1794,34 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="labour-request-page" className="mt-6">
+          <TabsContent value="labour-request-page">
             <Card>
               <p className="text-xs text-muted-foreground">
-                Content for the /labour-request page. The form fields, steps, and submit label
-                are managed in the Steps tab.
+                Content for the /labour-request page. The form fields, steps,
+                and submit label are managed in the Steps tab.
               </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Heading">
                   <Input
                     value={content.labourRequestPage.heading}
-                    onChange={(e) => updateLabourRequestPage({ heading: e.target.value })}
+                    onChange={(e) =>
+                      updateLabourRequestPage({ heading: e.target.value })
+                    }
                   />
                 </Field>
                 <Field label="Subheading">
                   <Input
                     value={content.labourRequestPage.subheading}
-                    onChange={(e) => updateLabourRequestPage({ subheading: e.target.value })}
+                    onChange={(e) =>
+                      updateLabourRequestPage({ subheading: e.target.value })
+                    }
                   />
                 </Field>
               </div>
             </Card>
           </TabsContent>
 
-          <TabsContent value="blog" className="mt-6">
+          <TabsContent value="blog">
             <div className="flex flex-col gap-6">
               <Card>
                 <p className="text-xs text-muted-foreground">
@@ -1820,15 +1850,15 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
             </div>
           </TabsContent>
 
-          <TabsContent value="requests" className="mt-6">
+          <TabsContent value="requests">
             <RequestsPanel />
           </TabsContent>
 
-          <TabsContent value="applications" className="mt-6">
+          <TabsContent value="applications">
             <ApplicationsPanel />
           </TabsContent>
 
-          <TabsContent value="messages" className="mt-6">
+          <TabsContent value="messages">
             <MessagesPanel />
           </TabsContent>
         </Tabs>
