@@ -281,11 +281,16 @@ export const defaultContent: SiteContent = {
   contactPage: {
     heading: "Get in Touch",
     subheading: "Questions, feedback, or need help with a request? We're here for you.",
-    email: "support@shromik.com",
-    phone: "01886 123 456",
-    address: "House 12, Road 5, Uttara, Dhaka 1230, Bangladesh",
-    hours: "Available 24/7",
     formHeading: "Send us a message",
+    branches: [
+      {
+        name: "Head Office",
+        address: "House 12, Road 5, Uttara, Dhaka 1230, Bangladesh",
+        phone: "01886 123 456",
+        email: "support@shromik.com",
+        hours: "Available 24/7",
+      },
+    ],
   },
   servicesPage: {
     heading: "All Services",

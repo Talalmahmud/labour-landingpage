@@ -118,8 +118,9 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
   const updateAboutPage = (
     patch: Partial<Omit<SiteContent["aboutPage"], "stats" | "team">>,
   ) => setContent((c) => ({ ...c, aboutPage: { ...c.aboutPage, ...patch } }));
-  const updateContactPage = (patch: Partial<SiteContent["contactPage"]>) =>
-    setContent((c) => ({ ...c, contactPage: { ...c.contactPage, ...patch } }));
+  const updateContactPage = (
+    patch: Partial<Omit<SiteContent["contactPage"], "branches">>,
+  ) => setContent((c) => ({ ...c, contactPage: { ...c.contactPage, ...patch } }));
   const updateServicesPage = (patch: Partial<SiteContent["servicesPage"]>) =>
     setContent((c) => ({
       ...c,
@@ -1566,38 +1567,6 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                     }
                   />
                 </Field>
-                <Field label="Email">
-                  <Input
-                    value={content.contactPage.email}
-                    onChange={(e) =>
-                      updateContactPage({ email: e.target.value })
-                    }
-                  />
-                </Field>
-                <Field label="Phone">
-                  <Input
-                    value={content.contactPage.phone}
-                    onChange={(e) =>
-                      updateContactPage({ phone: e.target.value })
-                    }
-                  />
-                </Field>
-                <Field label="Address">
-                  <Input
-                    value={content.contactPage.address}
-                    onChange={(e) =>
-                      updateContactPage({ address: e.target.value })
-                    }
-                  />
-                </Field>
-                <Field label="Hours">
-                  <Input
-                    value={content.contactPage.hours}
-                    onChange={(e) =>
-                      updateContactPage({ hours: e.target.value })
-                    }
-                  />
-                </Field>
                 <Field label="Form Heading">
                   <Input
                     value={content.contactPage.formHeading}
@@ -1607,6 +1576,64 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                   />
                 </Field>
               </div>
+
+              <SectionTitle>Branches</SectionTitle>
+              <p className="-mt-3 text-xs text-muted-foreground">
+                Add one entry per office or branch location. Each is shown as its own card on
+                the /contact page.
+              </p>
+              <ArrayEditor
+                items={content.contactPage.branches}
+                onChange={(branches) =>
+                  setContent((c) => ({
+                    ...c,
+                    contactPage: { ...c.contactPage, branches },
+                  }))
+                }
+                newItem={() => ({
+                  name: "New Branch",
+                  address: "",
+                  phone: "",
+                  email: "",
+                  hours: "",
+                })}
+                addLabel="Add branch"
+                minItems={1}
+                renderItem={(branch, update) => (
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <Field label="Branch Name" className="sm:col-span-2">
+                      <Input
+                        value={branch.name}
+                        onChange={(e) => update({ name: e.target.value })}
+                      />
+                    </Field>
+                    <Field label="Address" className="sm:col-span-2">
+                      <Input
+                        value={branch.address}
+                        onChange={(e) => update({ address: e.target.value })}
+                      />
+                    </Field>
+                    <Field label="Phone">
+                      <Input
+                        value={branch.phone}
+                        onChange={(e) => update({ phone: e.target.value })}
+                      />
+                    </Field>
+                    <Field label="Email">
+                      <Input
+                        value={branch.email}
+                        onChange={(e) => update({ email: e.target.value })}
+                      />
+                    </Field>
+                    <Field label="Hours" className="sm:col-span-2">
+                      <Input
+                        value={branch.hours}
+                        onChange={(e) => update({ hours: e.target.value })}
+                      />
+                    </Field>
+                  </div>
+                )}
+              />
             </Card>
           </TabsContent>
 

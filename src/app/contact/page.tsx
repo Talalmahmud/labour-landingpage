@@ -17,7 +17,9 @@ export default async function ContactPage() {
             <h1 className="font-heading text-3xl font-extrabold text-blue-950 sm:text-4xl dark:text-white">
               {content.contactPage.heading}
             </h1>
-            <p className="mt-3 text-base text-muted-foreground">{content.contactPage.subheading}</p>
+            <p className="mt-3 text-base text-muted-foreground">
+              {content.contactPage.subheading}
+            </p>
           </div>
         </div>
         <ContactForm content={content.contactPage} />

@@ -72,6 +72,14 @@ export interface HirerReview {
   avatarPublicId: string | null;
 }
 
+export interface ContactBranch {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+  hours: string;
+}
+
 export interface SiteContent {
   siteSettings: {
     logoPublicId: string | null;
@@ -165,11 +173,8 @@ export interface SiteContent {
   contactPage: {
     heading: string;
     subheading: string;
-    email: string;
-    phone: string;
-    address: string;
-    hours: string;
     formHeading: string;
+    branches: ContactBranch[];
   };
   servicesPage: {
     heading: string;
