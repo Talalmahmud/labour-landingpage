@@ -1356,6 +1356,49 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                   />
                 </Field>
               </div>
+
+              <SectionTitle>Social Media Links</SectionTitle>
+              <p className="-mt-3 text-xs text-muted-foreground">
+                Shown as icon links on the contact bar. Lucide has no
+                Facebook/Instagram-style brand icons — for an authentic logo,
+                upload one under the &quot;Icon Library&quot; tab first, then
+                pick it here (marked &quot;custom&quot;). Leave the URL empty
+                to hide a link.
+              </p>
+              <ArrayEditor
+                items={content.contact.socialLinks}
+                onChange={(socialLinks) => updateContact({ socialLinks })}
+                newItem={() => ({
+                  icon: "share-2",
+                  label: "New Link",
+                  url: "",
+                })}
+                addLabel="Add social link"
+                minItems={0}
+                renderItem={(link, update) => (
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    <Field label="Icon">
+                      <IconPicker
+                        value={link.icon}
+                        onChange={(icon) => update({ icon })}
+                      />
+                    </Field>
+                    <Field label="Label">
+                      <Input
+                        value={link.label}
+                        onChange={(e) => update({ label: e.target.value })}
+                      />
+                    </Field>
+                    <Field label="URL">
+                      <Input
+                        value={link.url}
+                        onChange={(e) => update({ url: e.target.value })}
+                        placeholder="https://"
+                      />
+                    </Field>
+                  </div>
+                )}
+              />
             </Card>
           </TabsContent>
 

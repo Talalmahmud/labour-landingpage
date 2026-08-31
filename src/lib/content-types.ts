@@ -80,6 +80,12 @@ export interface ContactBranch {
   hours: string;
 }
 
+export interface SocialLink {
+  icon: string;
+  label: string;
+  url: string;
+}
+
 export interface SiteContent {
   siteSettings: {
     logoPublicId: string | null;
@@ -158,6 +164,7 @@ export interface SiteContent {
     phone: string;
     phoneNote: string;
     whatsappLabel: string;
+    socialLinks: SocialLink[];
   };
   aboutPage: {
     heading: string;

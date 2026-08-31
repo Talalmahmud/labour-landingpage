@@ -233,6 +233,7 @@ export const defaultContent: SiteContent = {
     phone: "01886 123 456",
     phoneNote: "Available 24/7 for your support",
     whatsappLabel: "WhatsApp Us",
+    socialLinks: [],
   },
   aboutPage: {
     heading: "About Shromik",
