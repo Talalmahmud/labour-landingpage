@@ -1,8 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { DynamicIcon } from "@/components/ui/dynamic-icon";
+import { cloudinaryUrl } from "@/lib/cloudinary-url";
 import type { SiteContent } from "@/lib/content-types";
 
 interface ServicesContentProps {
@@ -45,33 +46,48 @@ export function ServicesContent({ page, services }: ServicesContentProps) {
             return (
               <div
                 key={service.title}
-                className="group flex flex-col gap-4 rounded-2xl border border-border bg-background p-6 shadow-xs transition-all hover:-translate-y-1 hover:border-blue-600/20 hover:shadow-lg"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-xs transition-all hover:-translate-y-1 hover:border-blue-600/20 hover:shadow-lg"
               >
-                <div className="flex size-18 items-center justify-center rounded-full bg-blue-100 text-blue-700 transition-colors group-hover:border-2 group-hover:border-blue-950  dark:bg-blue-900/30 dark:text-blue-400">
-                  <DynamicIcon name={service.icon} className="size-12" />
-                </div>
-                <div>
-                  <h3 className="text-base font-semibold text-blue-950 dark:text-white">
-                    {service.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {service.description}
-                  </p>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="mt-auto w-fit gap-1.5 rounded-full border-blue-950/15 text-blue-950 transition-colors group-hover:border-blue-600/40 group-hover:bg-blue-50 group-hover:text-blue-700 dark:text-white dark:group-hover:bg-blue-900/30 dark:group-hover:text-blue-300"
-                  render={
-                    <Link
-                      href={`/?service=${encodeURIComponent(service.title)}#how-it-works`}
+                {service.imagePublicId ? (
+                  <div className="relative h-50 w-full shrink-0">
+                    <Image
+                      src={cloudinaryUrl(
+                        service.imagePublicId,
+                        "f_auto,q_auto,w_480,h_400,c_fill,g_auto",
+                      )}
+                      alt={service.title}
+                      fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover"
                     />
-                  }
-                  nativeButton={false}
-                >
-                  Request This Service
-                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                </Button>
+                  </div>
+                ) : (
+                  <div className="h-50 w-full shrink-0 bg-blue-100 transition-colors group-hover:bg-blue-100/70 dark:bg-blue-900/30" />
+                )}
+                <div className="flex flex-1 flex-col gap-4 p-6">
+                  <div>
+                    <h3 className="text-base font-semibold text-blue-950 dark:text-white">
+                      {service.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {service.description}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-auto w-fit gap-1.5 rounded-full border-blue-950/15 text-blue-950 transition-colors group-hover:border-blue-600/40 group-hover:bg-blue-50 group-hover:text-blue-700 dark:text-white dark:group-hover:bg-blue-900/30 dark:group-hover:text-blue-300"
+                    render={
+                      <Link
+                        href={`/?service=${encodeURIComponent(service.title)}#how-it-works`}
+                      />
+                    }
+                    nativeButton={false}
+                  >
+                    Request This Service
+                    <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </Button>
+                </div>
               </div>
             );
           })}

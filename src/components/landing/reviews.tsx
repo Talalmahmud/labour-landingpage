@@ -94,8 +94,8 @@ export function Reviews({ content }: ReviewsProps) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="hidden sm:flex" />
-        <CarouselNext className="hidden sm:flex" />
+        <CarouselPrevious className=" left-20 " />
+        <CarouselNext className="right-20 " />
       </Carousel>
     </section>
   );

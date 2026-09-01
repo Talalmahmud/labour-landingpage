@@ -12,6 +12,7 @@ export interface HeroBadge {
 
 export interface ServiceItem {
   icon: string;
+  imagePublicId: string | null;
   title: string;
   description: string;
 }

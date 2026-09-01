@@ -1,6 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 
-import { DynamicIcon } from "@/components/ui/dynamic-icon";
+import { cloudinaryUrl } from "@/lib/cloudinary-url";
 import type { SiteContent } from "@/lib/content-types";
 
 interface ServicesProps {
@@ -19,19 +20,32 @@ export function Services({ content }: ServicesProps) {
         </p>
       </div>
 
-      <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
         {content.items.map((service) => {
           const isMoreServices = service.title === "More Services";
           const card = (
-            <div className="group flex h-full flex-col items-center gap-3 rounded-xl border border-border bg-background p-5 text-center shadow-xs transition-all hover:-translate-y-0.5 hover:shadow-md">
-              <div className="flex size-16 items-center justify-center rounded-full bg-blue-100 text-blue-700 transition-colors group-hover:border-2 group-hover:border-blue-950  dark:bg-blue-900/30 dark:text-blue-400">
-                <DynamicIcon name={service.icon} className="size-10" />
-              </div>
-              <div>
+            <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-background text-center shadow-xs transition-all hover:-translate-y-0.5 hover:shadow-md">
+              {service.imagePublicId ? (
+                <div className="relative h-50 w-full shrink-0">
+                  <Image
+                    src={cloudinaryUrl(
+                      service.imagePublicId,
+                      "f_auto,q_auto,w_480,h_400,c_fill,g_auto",
+                    )}
+                    alt={service.title}
+                    fill
+                    sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+                    className="object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="h-50 w-full shrink-0 bg-blue-100 transition-colors group-hover:bg-blue-100/70 dark:bg-blue-900/30" />
+              )}
+              <div className="flex flex-col gap-1 p-5">
                 <p className="text-sm font-semibold text-blue-950 dark:text-white">
                   {service.title}
                 </p>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {service.description}
                 </p>
               </div>

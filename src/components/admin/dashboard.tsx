@@ -725,34 +725,38 @@ export function AdminDashboard({ initialContent }: AdminDashboardProps) {
                   }))
                 }
                 newItem={() => ({
-                  icon: "wrench",
+                  icon: "",
+                  imagePublicId: null,
                   title: "New Service",
                   description: "Description",
                 })}
                 addLabel="Add service"
                 minItems={1}
                 renderItem={(service, update) => (
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                    <Field label="Icon">
-                      <IconPicker
-                        value={service.icon}
-                        onChange={(icon) => update({ icon })}
-                      />
-                    </Field>
-                    <Field label="Title">
-                      <Input
-                        value={service.title}
-                        onChange={(e) => update({ title: e.target.value })}
-                      />
-                    </Field>
-                    <Field label="Description">
-                      <Input
-                        value={service.description}
-                        onChange={(e) =>
-                          update({ description: e.target.value })
-                        }
-                      />
-                    </Field>
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <ImageUploadField
+                      value={service.imagePublicId}
+                      onChange={(imagePublicId) => update({ imagePublicId })}
+                      onUploadingChange={trackUploading}
+                      hint="Shown on the homepage and services page grids."
+                      previewTransform="f_auto,q_auto,w_160,h_160,c_fill,g_auto"
+                    />
+                    <div className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-2">
+                      <Field label="Title">
+                        <Input
+                          value={service.title}
+                          onChange={(e) => update({ title: e.target.value })}
+                        />
+                      </Field>
+                      <Field label="Description">
+                        <Input
+                          value={service.description}
+                          onChange={(e) =>
+                            update({ description: e.target.value })
+                          }
+                        />
+                      </Field>
+                    </div>
                   </div>
                 )}
               />
