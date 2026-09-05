@@ -49,11 +49,11 @@ export function ServicesContent({ page, services }: ServicesContentProps) {
                 className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-xs transition-all hover:-translate-y-1 hover:border-blue-600/20 hover:shadow-lg"
               >
                 {service.imagePublicId ? (
-                  <div className="relative h-50 w-full shrink-0">
+                  <div className="relative h-62 w-full shrink-0">
                     <Image
                       src={cloudinaryUrl(
                         service.imagePublicId,
-                        "f_auto,q_auto,w_900,h_600,c_fill,g_auto",
+                        "f_auto,q_auto,w_900,h_650,c_fill,g_auto",
                       )}
                       alt={service.title}
                       fill
