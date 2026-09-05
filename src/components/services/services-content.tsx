@@ -53,12 +53,12 @@ export function ServicesContent({ page, services }: ServicesContentProps) {
                     <Image
                       src={cloudinaryUrl(
                         service.imagePublicId,
-                        "f_auto,q_auto,w_480,h_400,c_fill,g_auto",
+                        "f_auto,q_auto,w_900,h_600,c_fill,g_auto",
                       )}
                       alt={service.title}
                       fill
                       sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-contain"
+                      className="object-center"
                     />
                   </div>
                 ) : (
