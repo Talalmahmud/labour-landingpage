@@ -30,7 +30,7 @@ export function Services({ content }: ServicesProps) {
                   <Image
                     src={cloudinaryUrl(
                       service.imagePublicId,
-                      "f_auto,q_auto,w_480,h_400,c_fill,g_auto",
+                      "f_auto,q_auto,w_900,h_600,c_fill,g_auto",
                     )}
                     alt={service.title}
                     fill
